@@ -1,3 +1,4 @@
+from flask import Flask 
 import RPi.GPIO as GPIO
 import time
 
@@ -25,18 +26,27 @@ def cleanUp():
 	cutOffLED()
 	GPIO.cleanup() #cleanup all gpio
 	
-try:
-	while (doneStr != 'stop'):
-		doneStr = str(raw_input("Turn light on?\t"))
-		if doneStr in ['Y', 'y', 'YES', 'Yes', 'yes']:
-			isOn = cutOnLED()
-       
-		doneStr = str(raw_input("Enter stop to exit...\nTurn light off?	"))
-		if doneStr in ['Y', 'y', 'YES', 'Yes', 'yes']:
-			isOn = cutOffLED()
+#try:
+#	while (doneStr != 'stop'):
+#		doneStr = str(raw_input("Turn light on?\t"))
+#		if doneStr in ['Y', 'y', 'YES', 'Yes', 'yes']:
+#			isOn = cutOnLED()
+#      
+#		doneStr = str(raw_input("Enter stop to exit...\nTurn light off?	"))
+#		if doneStr in ['Y', 'y', 'YES', 'Yes', 'yes']:
+#			isOn = cutOffLED()
+#	
+#except KeyboardInterrupt:
+#	cleanUp()
+
+app = Flask(__name__)
+@app.route("/")
+
+def hello():
+	return "Hello World!!!"
 	
-except KeyboardInterrupt:
-	cleanUp()
+if __name__ == "__main__":
+	app.run("0.0.0.0")
 
 print "\n\n\nDone"
 
