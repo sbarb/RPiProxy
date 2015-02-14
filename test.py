@@ -41,10 +41,14 @@ def cleanUp():
 #	cleanUp()
 
 app = Flask(__name__)
-@app.route("/")
 
+@app.route("/")
 def index():
 	return render_template('index.html')
+
+@app.route("/LEDinfo")
+def LEDinfo
+	return render_template('LEDinfo.html')
 	
 if __name__ == "__main__":
 	app.debug=True
