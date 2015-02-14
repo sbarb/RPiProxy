@@ -1,8 +1,7 @@
-from flask import Flask 
+from flask import Flask, request
 from flask import render_template
 import RPi.GPIO as GPIO
 import time
-
 isOn = False
 output = 7
 doneStr = ""
@@ -47,8 +46,14 @@ def index():
 	return render_template('index.html')
 
 @app.route("/LEDinfo")
-def LEDinfo
-	return render_template('LEDinfo.html')
+def LEDinfo():
+	isOn = request.args.get('LED')
+	print "LED = ", isOn
+	if isOn == 1:
+		cutOnLED()
+	if isOn == 0:
+		cutOffLED()
+	return render_template('index.html')
 	
 if __name__ == "__main__":
 	app.debug=True
@@ -56,4 +61,4 @@ if __name__ == "__main__":
 	
 print "\n\n\nDone"
 
-GPIO.cleanup()
+# GPIO.cleanup()
