@@ -1,8 +1,11 @@
 from flask import Flask, request
 from flask import render_template
+from jinja2 import Template
 import RPi.GPIO as GPIO
 import time
-isOn = False
+
+isOn = "OFF"
+notIsOn = "ON"
 output = 7
 doneStr = ""
 
@@ -43,17 +46,28 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-	return render_template('index.html')
+	return render_template('index.html', isOn=isOn, notIsOn=notIsOn)
 
-@app.route("/LEDinfo")
+@app.route("/LEDinfo", methods=['POST'])
 def LEDinfo():
-	isOn = request.args.get('LED')
+	isOn = request.form['LED']
+	if isOn == "ON":
+		notIsOn = "OFF"
+	elif isOn == "OFF":
+		notIsOn = "ON"
+		
 	print "LED = ", isOn
-	if isOn == 1:
+		
+	if request.form['LED'] == "ON":
+		isOn = "ON"
+		notIsOn = "OFF"
 		cutOnLED()
-	if isOn == 0:
+	elif request.form['LED'] == "OOFF":
+		isOn = "OFF"
+		notIsOn = "ON"
 		cutOffLED()
-	return render_template('index.html')
+
+	return render_template('index.html', isOn=isOn, notIsOn=notIsOn)
 	
 if __name__ == "__main__":
 	app.debug=True

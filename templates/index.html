@@ -9,12 +9,19 @@
 </head>
 <body>
 
-<h1>Choose whether the LED is ON or OFF</h1>
+LED is currently {{isOn}}
+
+<!-- <h1>Choose whether the LED is ON or OFF</h1>
 <form action="LEDinfo" method="get" id="ledButton">
 	<input type="radio" name="LED" value="1">ON<br>
 	<input type="radio" name="LED" value="0">OFF
 </form>
-<button type="submit" form="ledButton" value="Submit">Submit</button>
+<button type="submit" form="ledButton" value="Submit">LED is currently {{isOn}} Turn it {{notIsOn}}</button>
+ -->
+<form action="LEDinfo" method="POST">
+  <p><input type="submit" name="LED" value="{{notIsOn}}"></p>
+  <!-- <p><input type="submit" name="LED" value="OFF"></p> -->
+</form>
 
 </body>
 </html>
