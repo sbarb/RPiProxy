@@ -37,22 +37,17 @@ def index():
 
 @app.route("/LEDinfo", methods=['POST'])
 def LEDinfo():
-	isOn = request.form['LED']
-	if isOn == "ON":
-		notIsOn = "OFF"
-	elif isOn == "OFF":
-		notIsOn = "ON"
-		
 	if request.form['LED'] == "ON":
-		isOn = "ON"
+		isOn = True
 		notIsOn = "OFF"
-		cutOnLED()
+		# cutOnLED()
 	elif request.form['LED'] == "OFF":
-		isOn = "OFF"
+		isOn = False
 		notIsOn = "ON"
-		cutOffLED()
+		# cutOffLED()
 		
 	print "LED = ", isOn
+	print notIsOn
 	return render_template('index.html', isOn=isOn, notIsOn=notIsOn)
 	
 if __name__ == "__main__":

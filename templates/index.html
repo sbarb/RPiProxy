@@ -3,25 +3,24 @@
 <head>
   <meta charset="utf-8" />
   <title>LED - Switch</title>
-  <!-- <link type="text/css" rel="stylesheet"
+  <link type="text/css" rel="stylesheet"
         href="{{ url_for('static',
-              filename='hello.css')}}" /> -->
+              filename='index.css')}}" />
 </head>
 <body>
 
-LED is currently {{isOn}}
+<h1>LED is currently {{isOn}}</h1>
 
-<!-- <h1>Choose whether the LED is ON or OFF</h1>
-<form action="LEDinfo" method="get" id="ledButton">
-	<input type="radio" name="LED" value="1">ON<br>
-	<input type="radio" name="LED" value="0">OFF
-</form>
-<button type="submit" form="ledButton" value="Submit">LED is currently {{isOn}} Turn it {{notIsOn}}</button>
- -->
 <form action="LEDinfo" method="POST">
-  <p><input type="submit" name="LED" value="{{notIsOn}}"></p>
-  <!-- <p><input type="submit" name="LED" value="OFF"></p> -->
+<div>
+	{% if isOn %}
+		<p><input class="off" type="submit" name="LED" value="{{notIsOn}}"></p>
+	{% else %}
+		<p><input class="on" type="submit" name="LED" value="{{notIsOn}}"></p>
+	{% endif %}
+</div>
 </form>
 
 </body>
 </html>
+
