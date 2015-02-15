@@ -1,11 +1,10 @@
 from flask import Flask, request
-from flask import render_template
+from flask import render_template, redirect
 from jinja2 import Template
 import RPi.GPIO as GPIO
 import time
 
 isOn = "OFF"
-notIsOn = "ON"
 outputPin = 7
 doneStr = ""
 
@@ -17,50 +16,44 @@ GPIO.setwarnings(False)
 GPIO.setup(outputPin, GPIO.OUT)
 
 def cutOnLED():
-	GPIO.output(outputPin, True)
-	print "Going ON"
-	return True
+  GPIO.output(outputPin, True)
+  isOn = True
+  print "Going ON"
+  return True
 
 def cutOffLED():
-	GPIO.output(outputPin, False)
-	print "Going OFF"
-	return False
+  GPIO.output(outputPin, False)
+  isOn = False
+  print "Going OFF"
+  return False
+  
 def cleanUp():
-	cutOffLED()
-	GPIO.cleanup() #cleanup all gpio
+  cutOffLED()
+  GPIO.cleanup() #cleanup all gpio
 
 app = Flask(__name__)
 
-@app.route("/")
+@app.route("/", methods=['GET'])
 def index():
-	return render_template('index.html', isOn=isOn, notIsOn=notIsOn)
+  print "/ LED isOn = " + isOn
+  return render_template('index.html', isOn=isOn)
 
 @app.route("/LEDinfo", methods=['POST'])
 def LEDinfo():
-	isOn = request.form['LED']
-	if isOn == "ON":
-		notIsOn = "OFF"
-	elif isOn == "OFF":
-		notIsOn = "ON"
-		
-	if request.form['LED'] == "ON":
-		isOn = "ON"
-		notIsOn = "OFF"
-		cutOnLED()
-	elif request.form['LED'] == "OFF":
-		isOn = "OFF"
-		notIsOn = "ON"
-		cutOffLED()
-		
-	print "LED = ", isOn
-	return render_template('index.html', isOn=isOn, notIsOn=notIsOn)
-	
+  if request.form['LED'] == "ON":
+    cutOnLED()
+  elif request.form['LED'] == "OFF":
+    cutOffLED()
+  else
+    print "Got an unexepected request @ /LEDinfo."
+
+  print "/LEDinfo LED isOn = " + isOn
+  return redirect('/')
+  
 if __name__ == "__main__":
-	app.debug=True
-	app.run("0.0.0.0")
+  app.debug = True
+  app.run("0.0.0.0")
 
-
-	
-print "\n\n\nDone"
-
-GPIO.cleanup()
+  print "\n\n\nServer Run Complete."
+  GPIO.cleanup()
+  print "GPIO Cleanup Complete"
