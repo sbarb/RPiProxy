@@ -17,14 +17,10 @@ GPIO.setup(outputPin, GPIO.OUT)
 
 def cutOnLED():
   GPIO.output(outputPin, True)
-  isOn = True
-  print "Going ON"
   return True
 
 def cutOffLED():
   GPIO.output(outputPin, False)
-  isOn = False
-  print "Going OFF"
   return False
   
 def cleanUp():
@@ -35,17 +31,16 @@ app = Flask(__name__)
 
 @app.route("/", methods=['GET'])
 def index():
-  global isOn
-  isOn = (not isOn)
   print "/ LED isOn = " + str(isOn)
   return render_template('index.html', isOn=isOn)
 
 @app.route("/LEDinfo", methods=['POST'])
 def LEDinfo():
+  global isOn
   if request.form['LED'] == "ON":
-    cutOnLED()
+    isOn = cutOnLED()
   elif request.form['LED'] == "OFF":
-    cutOffLED()
+    isOn = cutOffLED()
   else:
     print "Got an unexepected request @ /LEDinfo."
 
