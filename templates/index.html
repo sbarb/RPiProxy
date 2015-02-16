@@ -13,11 +13,10 @@
  -->
 <form action="LEDinfo" method="POST">
 <div>
+  <h1>Cut the LED</h1>
   {% if isOn %}
-    <h1>Cut the LED</h1>
     <p><input class="off" type="submit" name="LED" value="OFF"></p>
   {% else %}
-  <h1>Cut the LED</h1>
     <p><input class="on" type="submit" name="LED" value="ON"></p>
   {% endif %}
 </div>

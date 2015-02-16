@@ -4,7 +4,7 @@ from jinja2 import Template
 import RPi.GPIO as GPIO
 import time
 
-isOn = "OFF"
+isOn = False
 outputPin = 7
 doneStr = ""
 
@@ -35,7 +35,9 @@ app = Flask(__name__)
 
 @app.route("/", methods=['GET'])
 def index():
-  print "/ LED isOn = " + isOn
+  global isOn
+  isOn = (not isOn)
+  print "/ LED isOn = " + str(isOn)
   return render_template('index.html', isOn=isOn)
 
 @app.route("/LEDinfo", methods=['POST'])
@@ -44,10 +46,10 @@ def LEDinfo():
     cutOnLED()
   elif request.form['LED'] == "OFF":
     cutOffLED()
-  else
+  else:
     print "Got an unexepected request @ /LEDinfo."
 
-  print "/LEDinfo LED isOn = " + isOn
+  #print "/LEDinfo LED isOn = {}".format(isOn)
   return redirect('/')
   
 if __name__ == "__main__":
