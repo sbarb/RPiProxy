@@ -48,7 +48,7 @@ def LEDinfo():
   return redirect('/')
 
 @app.route("/err")
-  def err():
+def err():
     abort(404)
   
 if __name__ == "__main__": 
