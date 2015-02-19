@@ -32,7 +32,7 @@ app = Flask(__name__)
 @app.route("/", methods=['GET'])
 def index():
   print "/ LED isOn = " + str(isOn)
-  return render_template('index.html', isOn=isOn)
+  return render_template('index.html', isOn=isOn, error=err)
 
 @app.route("/LEDinfo", methods=['POST', 'GET'])
 def LEDinfo():
@@ -47,7 +47,7 @@ def LEDinfo():
     print "Got an unexepected request @ /LEDinfo."
     err = "BAD REQUEST!!!"
   #print "/LEDinfo LED isOn = {}".format(isOn)
-  return redirect('/', error=err)
+  return redirect('/',)
 # 
 # 
 # @app.errorhandler(400)
