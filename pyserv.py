@@ -39,8 +39,9 @@ def index():
 @app.route("/LEDinfo", methods=['POST', 'GET'])
 def LEDinfo():
   global isOn, err
-  button = request.args.get('LED', '')
+  button = request.form['LED'] # request.args.get('LED', '')
   # if request.form['LED'] == "ON":
+  print "button = " + button
   if button == "ON":
     isOn = cutOnLED()
   elif button == "OFF":
