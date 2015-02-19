@@ -43,9 +43,13 @@ def LEDinfo():
     isOn = cutOffLED()
   else:
     print "Got an unexepected request @ /LEDinfo."
-
+    redirect('/err')
   #print "/LEDinfo LED isOn = {}".format(isOn)
   return redirect('/')
+
+@app.route("/err")
+  def err():
+    abort(404)
   
 if __name__ == "__main__": 
   app.debug = True
