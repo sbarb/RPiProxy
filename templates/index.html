@@ -6,6 +6,88 @@
   <link type="text/css" rel="stylesheet"
         href="{{ url_for('static',
               filename='index.css')}}" />
+</head>
+<body>
+<!-- 
+<h1>LED is currently {{isOn}}</h1>
+ -->
+<form action="LEDinfo" method="POST">
+<div>
+  <h1>Cut the LED</h1>
+  {% if isOn %}
+    <p><input class="off" type="submit" name="LED" value="OFF"></p>
+  {% else %}
+    <p><input class="on" type="submit" name="LED" value="ON"></p>
+  {% endif %}
+</div>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   <!--  -->
   <!-- Google Anylitics -->
   <script>
@@ -18,11 +100,7 @@
   </script>
   <!--  -->
   <!--  -->
-</head>
-<body>
-<!-- 
-<h1>LED is currently {{isOn}}</h1>
- -->
+
 <!-- first ad -->
 <script type="text/javascript">
     google_ad_client = "ca-pub-3921485183382006";
@@ -47,16 +125,6 @@ src="//pagead2.googlesyndication.com/pagead/show_ads.js">
 </script>
 <!-- fourth ad -->
 
-<form action="LEDinfo" method="POST">
-<div>
-  <h1>Cut the LED</h1>
-  {% if isOn %}
-    <p><input class="off" type="submit" name="LED" value="OFF"></p>
-  {% else %}
-    <p><input class="on" type="submit" name="LED" value="ON"></p>
-  {% endif %}
-</div>
-</form>
 
 
 <!-- second ad -->

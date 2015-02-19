@@ -39,10 +39,11 @@ def index():
 @app.route("/LEDinfo", methods=['POST', 'GET'])
 def LEDinfo():
   global isOn, err
+  button = request.args.get('LED', '')
   # if request.form['LED'] == "ON":
-  if request.args.get('LED', 'ON'):
+  if button == "ON":
     isOn = cutOnLED()
-  elif request.form['LED'] == "OFF":
+  elif button == "OFF":
     isOn = cutOffLED()
   else:
     print "Got an unexepected request @ /LEDinfo."
