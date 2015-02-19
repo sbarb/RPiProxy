@@ -34,23 +34,28 @@ def index():
   print "/ LED isOn = " + str(isOn)
   return render_template('index.html', isOn=isOn)
 
-@app.route("/LEDinfo", methods=['POST'])
+@app.route("/LEDinfo", methods=['POST', 'GET'])
 def LEDinfo():
+  err = None
   global isOn
-  if request.form['LED'] == "ON":
+  # if request.form['LED'] == "ON":
+  if request.args.get('LED', 'ON'):
     isOn = cutOnLED()
   elif request.form['LED'] == "OFF":
     isOn = cutOffLED()
   else:
     print "Got an unexepected request @ /LEDinfo."
-    redirect('/err')
+    err = "BAD REQUEST!!!"
   #print "/LEDinfo LED isOn = {}".format(isOn)
-  return redirect('/')
-
-@app.route("/err")
-def err():
-    abort(404)
-  
+  return redirect('/', error=err)
+# 
+# 
+# @app.errorhandler(400)
+# def page_not_found(error):
+    
+#     return render_template('page_not_found.html'), 400
+# 
+# 
 if __name__ == "__main__": 
   app.debug = True
   app.run("0.0.0.0")
