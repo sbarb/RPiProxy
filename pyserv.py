@@ -7,6 +7,7 @@ import time
 isOn = False
 outputPin = 7
 doneStr = ""
+err = None
 
 #setup gpio pinout using BOARD numbering
 GPIO.setmode(GPIO.BOARD)
@@ -31,13 +32,13 @@ app = Flask(__name__)
 
 @app.route("/", methods=['GET'])
 def index():
+  global err
   print "/ LED isOn = " + str(isOn)
   return render_template('index.html', isOn=isOn, error=err)
 
 @app.route("/LEDinfo", methods=['POST', 'GET'])
 def LEDinfo():
-  err = None
-  global isOn
+  global isOn, err
   # if request.form['LED'] == "ON":
   if request.args.get('LED', 'ON'):
     isOn = cutOnLED()
@@ -46,8 +47,8 @@ def LEDinfo():
   else:
     print "Got an unexepected request @ /LEDinfo."
     err = "BAD REQUEST!!!"
-  #print "/LEDinfo LED isOn = {}".format(isOn)
-  return redirect('/',)
+  
+  return redirect('/')
 # 
 # 
 # @app.errorhandler(400)
