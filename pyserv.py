@@ -3,6 +3,7 @@ from flask import render_template, redirect
 from jinja2 import Template
 import RPi.GPIO as GPIO
 import time
+import json
 
 isOn = False
 outputPin = 7
@@ -39,7 +40,7 @@ def index():
 @app.route("/LEDinfo", methods=['POST', 'GET'])
 def LEDinfo():
   global isOn, err
-  button = request.form['LED'] # request.args.get('LED', '')
+  button = json.dumps(request.form['LED']) # request.args.get('LED', '')
   # if request.form['LED'] == "ON":
   print "button = " + button
   if button == "ON":
