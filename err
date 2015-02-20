@@ -1,0 +1,12 @@
+120.144.201.130 - - [17/Feb/2015 22:54:25] code 400, message Bad HTTP/0.9 request type ('\xc1\xc7X')
+120.144.201.130 - - [17/Feb/2015 22:54:25] "��X
+                                               zབྷ��[��!��O��})!dA�ˑ�����?<ǕHAW�?�?6v��mYui" 400 -
+119.154.161.216 - - [17/Feb/2015 22:55:39] code 400, message Bad request syntax ('\x8fL\xf2\x1f\xecaA\xce\xe6I0G(\x14Y&\x93Uv\x89\xce\x90\xb4FX9\x0f\xb0\x86HVU\xf8\xdb\x1a\xc1af\x80')
+119.154.161.216 - - [17/Feb/2015 22:55:39] "��aA��I0G(Y&�Uv�ΐ�FX9��HVU���af�" 400 -
+122.54.203.88 - - [17/Feb/2015 22:56:10] code 400, message Bad request syntax ('~\x1c\xb6\xed\xfd\xfa\xa7\xdf&\xe3o\xd1\x9a\xc4=\xc3\x9f\x96\xc0}\xab\xb4\xc8\xd0|q2\xd1I5\x9aP\x93M\x1d{\x87\x86')
+122.54.203.88 - - [17/Feb/2015 22:56:10] "~������&�oњ�=ß��}����|q2�I5�P�M{��" 400 -
+176.45.237.77 - - [17/Feb/2015 23:10:58] code 400, message Bad request syntax ('\r\x06\xb6lA|l\x08\xf7+\x99\x9e_\x9a\xb6\x92\x8f0\xbe\xcc\x06Z:\xc7\x945\xbe\x13.\xcd\xbd\x90aw\x9eB\xec\xe3\xc2\x96\xe6\x17\xf2\xe6k\xe5K\xcc\x9c\xf4b\xb9\xd3\xbd\x01F(')
+�lA|�+��_�����Z:ǔ5�.ͽ�aw�B�����k�K̜�b�ӽF(" 400 -
+188.228.84.239 - - [18/Feb/2015 00:12:26] code 400, message Bad request version ('\xa5\xab\xa9\xca\x14\xb80\xe2P7\xf06e1n\x92')
+�����0�P7�6e1n�" 400 -Feb/2015 00:12:26] "2,
+67.169.103.211 - - [18/Feb/2015 01:21:20] code 400, message Bad HTTP/0.9 request type ('\x18jL\xcd')
