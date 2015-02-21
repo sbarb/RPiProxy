@@ -38,7 +38,8 @@ def index():
 @app.route("/LEDinfo", methods=['POST', 'GET'])
 def LEDinfo():
   global isOn
-  ledIsOn = request.args.get('LED', '')
+  ledIsOn = request.form.get('LED')
+  print ledIsOn
 #  print "\n\n" 
 #  print request.__dict__ 
 #  print "\n\n"
