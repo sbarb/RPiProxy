@@ -38,10 +38,10 @@ def index():
 @app.route("/LEDinfo", methods=['POST', 'GET'])
 def LEDinfo():
   global isOn
-  print json.dumps(request)
-  if request.form['LED'] == "ON":
+  ledIsOn = request.args.get('LED', '')
+  if ledIsOn == "ON" # request.form['LED'] == "ON":
     isOn = cutOnLED()
-  elif request.form['LED'] == "OFF":
+  elif ledIsOn == "ON" # request.form['LED'] == "OFF":
     isOn = cutOffLED()
   else:
     print "Got an unexepected request @ /LEDinfo."
