@@ -3,7 +3,6 @@ from flask import render_template, redirect
 from jinja2 import Template
 import RPi.GPIO as GPIO
 import time
-import json
 
 isOn = False
 outputPin = 7
@@ -33,25 +32,21 @@ app = Flask(__name__)
 @app.route("/", methods=['GET'])
 def index():
   print "/ LED isOn = " + str(isOn)
-  return render_template('index.html', isOn=isOn)
+  return render_template('index.html', isOn=isOn, error=err)
 
 @app.route("/LEDinfo", methods=['POST', 'GET'])
 def LEDinfo():
+  err = None
   global isOn
-  ledIsOn = request.args.get('LED', '')
-  if ledIsOn == "ON" # request.form['LED'] == "ON":
-#  print "\n\n" 
-#  print request.__dict__ 
-#  print "\n\n"
-#  print request.environ['werkzeug.request'].__dict__
-#  print "\n\n"
-  if ledIsOn == "ON" # request.form['LED'] == "ON":
+  # if request.form['LED'] == "ON":
+  if request.args.get('LED', 'ON'):
     isOn = cutOnLED()
-  elif ledIsOn == "OFF" # request.form['LED'] == "OFF":
+  elif request.form['LED'] == "OFF":
     isOn = cutOffLED()
   else:
     print "Got an unexepected request @ /LEDinfo."
-    
+    err = "BAD REQUEST!!!"
+  #print "/LEDinfo LED isOn = {}".format(isOn)
   return redirect('/')
 # 
 # 
