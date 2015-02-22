@@ -1,32 +1,30 @@
-from flask import Flask, request
-from flask import render_template, redirect
+from flask import Flask, request, render_template, redirect
 from jinja2 import Template
 import RPi.GPIO as GPIO
 import time
-import json
 
 isOn = False
-outputPin = 7
-doneStr = ""
+light = 7
 
 #setup gpio pinout using BOARD numbering
 GPIO.setmode(GPIO.BOARD)
 #ignore warnings
 GPIO.setwarnings(False)
 #setup pin for output
-GPIO.setup(outputPin, GPIO.OUT)
+GPIO.setup(light, GPIO.OUT)
 
-def cutOnLED():
-  GPIO.output(outputPin, True)
+def writeHigh(pin):
+  GPIO.output(pin, True)
   return True
 
-def cutOffLED():
-  GPIO.output(outputPin, False)
+def writeLow(pin):
+  GPIO.output(pin, False)
   return False
   
 def cleanUp():
-  cutOffLED()
-  GPIO.cleanup() #cleanup all gpio
+  if !isOn:
+    writeLow(light) # cut light off
+  GPIO.cleanup() # cleanup all gpio 
 
 app = Flask(__name__)
 
@@ -39,34 +37,23 @@ def index():
 def LEDinfo():
   global isOn
   ledIsOn = request.form.get('LED')
-  print ledIsOn
-#  print "\n\n" 
-#  print request.__dict__ 
-#  print "\n\n"
-#  print request.environ['werkzeug.request'].__dict__
-#  print "\n\n"
-# if request.form['LED'] == "ON":
+
   if ledIsOn == "ON":
-    isOn = cutOnLED()
-# if request.form['LED'] == "OFF":
+    isOn = writeHigh(light)
   elif ledIsOn == "OFF": 
-    isOn = cutOffLED()
+    isOn = writeLow(light)
   else:
     print "Got an unexepected request @ /LEDinfo."
-    
+  
+  print ledIsOn
   return redirect('/')
-# 
-# 
-# @app.errorhandler(400)
-# def page_not_found(error):
-    
-#     return render_template('page_not_found.html'), 400
-# 
-# 
-if __name__ == "__main__": 
-  app.debug = True
-  app.run("0.0.0.0")
 
-  print "\n\n\nServer Run Complete."
-  GPIO.cleanup()
-  print "GPIO Cleanup Complete"
+if __name__ == "__main__": 
+  try:
+    app.debug = True
+    app.run("0.0.0.0")
+
+  except (KeyboardInterrupt, SystemExit):
+    print "\n\n\nServer Run Complete."
+    cleanUp()
+    print "GPIO Cleanup Complete"
