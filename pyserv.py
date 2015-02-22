@@ -39,22 +39,21 @@ def index():
 def LEDinfo():
   global isOn
   ledIsOn = request.form.get('LED')
-#  print ledIsOn
-  # ledIsOn = request.args.get('LED', '')
+  print ledIsOn
 #  print "\n\n" 
 #  print request.__dict__ 
 #  print "\n\n"
 #  print request.environ['werkzeug.request'].__dict__
 #  print "\n\n"
 # if request.form['LED'] == "ON":
-  if ledIsOn == False:
+  if ledIsOn == "ON":
     isOn = cutOnLED()
 # if request.form['LED'] == "OFF":
-  elif ledIsOn == True: 
+  elif ledIsOn == "OFF": 
     isOn = cutOffLED()
   else:
     print "Got an unexepected request @ /LEDinfo."
-  print "The light is " + str(isOn)
+    
   return redirect('/')
 # 
 # 
