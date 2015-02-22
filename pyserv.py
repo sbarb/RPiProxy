@@ -46,10 +46,10 @@ def LEDinfo():
 #  print request.environ['werkzeug.request'].__dict__
 #  print "\n\n"
 # if request.form['LED'] == "ON":
-  if isOn == True:
+  if isOn == False:
     isOn = cutOnLED()
 # if request.form['LED'] == "OFF":
-  elif isOn == False: 
+  elif isOn == True: 
     isOn = cutOffLED()
   else:
     print "Got an unexepected request @ /LEDinfo."
