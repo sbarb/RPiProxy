@@ -22,7 +22,7 @@ def writeLow(pin):
   return False
   
 def cleanUp():
-  if !isOn:
+  if isOn:
     writeLow(light) # cut light off
   GPIO.cleanup() # cleanup all gpio 
 
@@ -52,8 +52,8 @@ if __name__ == "__main__":
   try:
     app.debug = True
     app.run("0.0.0.0")
-
-  except (KeyboardInterrupt, SystemExit):
+    raise KeyboardInterrupt
+  finally:
     print "\n\n\nServer Run Complete."
     cleanUp()
     print "GPIO Cleanup Complete"
