@@ -40,6 +40,7 @@ def LEDinfo():
   global isOn
   ledIsOn = request.form.get('LED')
 #  print ledIsOn
+  # ledIsOn = request.args.get('LED', '')
 #  print "\n\n" 
 #  print request.__dict__ 
 #  print "\n\n"
