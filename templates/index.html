@@ -2,7 +2,7 @@
 <html lang='en'>
 <head>
   <meta charset="utf-8" />
-  <title>LED - Switch</title>
+  <title>Lamp - Switch</title>
   <link type="text/css" rel="stylesheet"
         href="{{ url_for('static',
               filename='index.css')}}" />
@@ -13,7 +13,7 @@
  -->
 <form action="LEDinfo" method="POST">
 <div>
-  <h1>Cut the LED</h1>
+  <h1>Cut the Lamp</h1>
   {% if isOn %}
     <p><input class="off" type="submit" name="LED" value="OFF"></p>
   {% else %}
