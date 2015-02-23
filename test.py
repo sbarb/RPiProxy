@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, redirect
 from jinja2 import Template
-import RPi.GPIO as GPIO
+# import RPi.GPIO as GPIO
 import time
 
 pin1 = 7
@@ -12,34 +12,34 @@ isOn2 = False
 isOn3 = False
 isOn4 = False
 
-#setup gpio pinout using BOARD numbering
-GPIO.setmode(GPIO.BOARD)
-#ignore warnings
-GPIO.setwarnings(False)
-#setup pin for output
-GPIO.setup(pin1, GPIO.OUT)
-GPIO.setup(pin2, GPIO.OUT)
-GPIO.setup(pin3, GPIO.OUT)
-GPIO.setup(pin4, GPIO.OUT)
+# #setup gpio pinout using BOARD numbering
+# GPIO.setmode(GPIO.BOARD)
+# #ignore warnings
+# GPIO.setwarnings(False)
+# #setup pin for output
+# GPIO.setup(pin1, GPIO.OUT)
+# GPIO.setup(pin2, GPIO.OUT)
+# GPIO.setup(pin3, GPIO.OUT)
+# GPIO.setup(pin4, GPIO.OUT)
 
-def writeHigh(pin):
-  GPIO.output(pin, True)
-  return True
+# def writeHigh(pin):
+#   GPIO.output(pin, True)
+#   return True
 
-def writeLow(pin):
-  GPIO.output(pin, False)
-  return False
+# def writeLow(pin):
+#   GPIO.output(pin, False)
+#   return False
   
-def cleanUp():
-  if isOn1:
-    writeLow(pin1) # cut pin1 off
-  elif isOn2:
-    writeLow(pin2) # cut pin2 off
-  elif isOn3:
-    writeLow(pin3) # cut pin3 off
-  elif isOn4:
-    writeLow(pin4) # cut pin4 off
-  GPIO.cleanup() # cleanup all gpio 
+# def cleanUp():
+#   if isOn1:
+#     writeLow(pin1) # cut pin1 off
+#   elif isOn2:
+#     writeLow(pin2) # cut pin2 off
+#   elif isOn3:
+#     writeLow(pin3) # cut pin3 off
+#   elif isOn4:
+#     writeLow(pin4) # cut pin4 off
+#   GPIO.cleanup() # cleanup all gpio 
 
 app = Flask(__name__)
 
@@ -61,31 +61,31 @@ def LEDinfo():
   
   if pin1IsOn == "1": 
   	print "light on"
-  	isOn1 = writeHigh(pin1)
+  	isOn1 = True
   elif pin1IsOn == "0":
   	print "light off" 
-    isOn1 = writeLow(pin1)
+  	isOn1 = False
 
   elif pin2IsOn == "1":
   	print "led 1 on"
-    isOn2 = writeHigh(pin2)
+  	isOn2 = True
   elif pin2IsOn == "0": 
   	print "led 1 off"
-    isOn2 = writeLow(pin2)
+  	isOn2 = False
 
   elif pin3IsOn == "1":
   	print "led 2 on"
-    isOn3 = writeHigh(pin3)
+  	isOn3 = True
   elif pin3IsOn == "0":
   	print "led 2 off" 
-    isOn3 = writeLow(pin3)
+  	isOn3 = False
 
   elif pin4IsOn == "1":
     print "led 3 on"
-    isOn4 = writeHigh(pin4)
+    isOn4 = True
   elif pin4IsOn == "0": 
   	print "led 3 off"
-    isOn4 = writeLow(pin4)
+  	isOn4 = False
 
   else:
     print "Got an unexepected request."
@@ -100,5 +100,5 @@ if __name__ == "__main__":
 
   finally:
     print "\n\n\nServer Run Complete."
-    cleanUp()
+    # cleanUp()
     print "GPIO Cleanup Complete"
