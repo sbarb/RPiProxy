@@ -38,7 +38,6 @@ def p(state=0):
   state = str(state)
   return {"pin11": state}
 
-  
 def _(*args):
   data = dict(obj.items()[0] for obj in args)
   R.post(URL, data=data)
@@ -94,7 +93,7 @@ def flicker(times):
   flicker(times-1)
 
 flicker(3)
-rando(800)
+rando(20)
 # pulsate(10)
 flicker(3)
 
