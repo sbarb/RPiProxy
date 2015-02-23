@@ -22,6 +22,7 @@ input.offbtn {
 	cursor: pointer;
 	outline: 0;
 	display: inline;
+	color:	rgba(0,0,0,0);
 }
 
 input.onbtn {
@@ -35,6 +36,7 @@ input.onbtn {
 	cursor: pointer;
 	outline: 0;
 	display: inline;
+	color:	rgba(0,0,0,0);
 }
 /*
 
