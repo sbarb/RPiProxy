@@ -25,8 +25,10 @@ def writeLow(pin):
   return False
   
 def cleanUp():
-  if isOn:
+  if isOnLight:
     writeLow(light) # cut light off
+  if isOnLed:
+    writeLow(led) # cut led off
   GPIO.cleanup() # cleanup all gpio 
 
 app = Flask(__name__)
