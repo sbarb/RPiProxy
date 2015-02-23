@@ -47,7 +47,7 @@ app = Flask(__name__)
 def index():
   print "/ Light isOn = " + str(isOnLamp)
   print "/ LED isOn = " + str(isOnLed)
-  return render_template('index.html', isOnLamp=isOnLamp, isOnLed=isOnLed, isOnLed=isOn2Led, isOnLed=isOn3Led)
+  return render_template('index.html', isOnLamp=isOnLamp, isOnLed=isOnLed, isOn2Led=isOn2Led, isOn3Led=isOn3Led)
 
 @app.route("/LEDinfo", methods=['POST', 'GET'])
 def LEDinfo():
