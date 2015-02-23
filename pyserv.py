@@ -31,8 +31,8 @@ print isPi
 # mapping of physical pin (and human readable name) to the internal GPIO pin numbering
 # ie: {name: data}
 _unordered_pins = {
-  'pin1': { 'pin': 7, 'state': False, 'weight': 1 },
-  'pin2': { 'pin': 11, 'state': False, 'weight': 2 },
+  'Lamp': { 'pin': 7, 'state': False, 'weight': 1 },
+  'Alpha': { 'pin': 11, 'state': False, 'weight': 2 },
   'pin3': { 'pin': 13, 'state': False, 'weight': 3 },
   'pin4': { 'pin': 15, 'state': False, 'weight': 4 }
 }
