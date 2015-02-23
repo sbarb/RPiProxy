@@ -1,9 +1,29 @@
 from collections import OrderedDict
 from flask import Flask, request, render_template, redirect
-# TODO: rename HTML form names to pins' keys
+import os
+
+# helper functions
+def notAPi(body):
+    print "This is not a running on a pi. Skipping a pi feature: " + body
+
+def makeDebugString(pin_tuple):
+    return "/ "+ pin_tuple[0] +" = " + pin_tuple[1]
+
+def toBoolean(boolStr):
+    if str(boolStr) == "1":
+        return True
+    elif str(boolStr) == "0":
+        return False
+    else:
+        return None
 
 # Configure if the program is running as a Raspberry pi
-isPi = False # TODO: do env var
+# expected value is 0 or 1
+if 'PI' in os.environ:
+    isPi = toBoolean(os.environ['PI'])
+else:
+    isPi = False
+
 if isPi:
     import RPi.GPIO as GPIO
 
@@ -18,20 +38,7 @@ _unordered_pins = {
 # guarantees order during iteration based on the weight key
 pins = OrderedDict(sorted(_unordered_pins.items(), key=lambda t: t[1]['weight']))
 
-# helper functions
-def notAPi(body):
-    print "This is not a running on a pi. Skipping a pi feature: " + body
 
-def makeDebugString(pin_tuple):
-    return "/ "+ pin_tuple[0] +" = " + pin_tuple[1]
-
-def toBoolean(boolStr):
-    if boolStr == "1":
-        return True
-    elif boolStr == "0":
-        return False
-    else:
-        return None
 
 def initPi():
     if not isPi:
