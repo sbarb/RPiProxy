@@ -2,17 +2,6 @@ import requests as R
 from time import sleep
 from random import choice
 
-
-import wave, struct
-
-waveFile = wave.open('sine.wav', 'r')
-
-length = waveFile.getnframes()
-for i in range(0,length):
-    waveData = waveFile.readframes(1)
-    data = struct.unpack("<h", waveData)
-    print int(data[0])
-
 URL = 'http://108.178.248.104/LEDinfo'
 # state should be 0 or 1
 def l(state=0):
@@ -58,10 +47,10 @@ def rando(times):
   choiceA = choice([1, 0])
   data.append(a(choiceA))
   choiceT = choice([1, 0])
-  data.append(t(choiceA))
+  data.append(t(choiceT))
   choiceF = choice([1, 0])
   print choiceA, choiceT, choiceF
-  data.append(f(choiceA))
+  data.append(f(choiceF))
   _(*data)
   sleep(.5)
   rando(times-1)
@@ -73,10 +62,10 @@ def flicker(times):
   _(a(0), t(0), f(0))
   sleep(.3)
   flicker(times-1)
-# flicker(5)
+flicker(5)
 # rando(20)
-# # pulsate(30)
-# flicker(5)
+pulsate(30)
+flicker(5)
 
 # lampOn()
 # sleep(1)

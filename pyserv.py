@@ -30,10 +30,17 @@ if isPi:
 # mapping of physical pin (and human readable name) to the internal GPIO pin numbering
 # ie: {name: data}
 _unordered_pins = {
-  'Lamp': { 'pin': 7, 'state': False, 'weight': 1 },
-  'Alpha': { 'pin': 11, 'state': False, 'weight': 2 },
+  'pin1': { 'pin': 7, 'state': False, 'weight': 1 },
+  'pin2': { 'pin': 11, 'state': False, 'weight': 2 },
   'pin3': { 'pin': 13, 'state': False, 'weight': 3 },
-  'pin4': { 'pin': 15, 'state': False, 'weight': 4 }
+  'pin4': { 'pin': 15, 'state': False, 'weight': 4 },
+  'pin5': { 'pin': 12, 'state': False, 'weight': 5 },
+  'pin6': { 'pin': 16, 'state': False, 'weight': 6 },
+  'pin7': { 'pin': 18, 'state': False, 'weight': 7 },
+  'pin8': { 'pin': 22, 'state': False, 'weight': 8 },
+  'pin9': { 'pin': 24, 'state': False, 'weight': 9 },
+  'pin10': { 'pin': 26, 'state': False, 'weight': 10 },
+  'pin11': { 'pin': 19, 'state': False, 'weight': 11 }
 }
 # guarantees order during iteration based on the weight key
 pins = OrderedDict(sorted(_unordered_pins.items(), key=lambda t: t[1]['weight']))
