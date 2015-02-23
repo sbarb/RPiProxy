@@ -44,10 +44,10 @@ def LEDinfo():
   global isOnLight, isOnLed
   lampIsOn = request.form.get('Lamp')
   ledIsOn = request.form.get('LED')
-  print "Going " + ledIsOn
+  # print "Going " + ledIsOn
 
   if lampIsOn == "ON": 
-    isOnLight = writeLow(light)
+    isOnLight = writeHigh(light)
   elif lampIsOn == "OFF": 
     isOnLight = writeLow(light)
   elif ledIsOn == "ON":
