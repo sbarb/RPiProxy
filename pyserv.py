@@ -83,7 +83,7 @@ def cleanUp():
 
 def writeAll(state):
     for name, data in pins.iteritems():
-        if pins[name]['state'] not state:
+        if pins[name]['state'] != state:
             writePin(data['pin'], state)
             pins[name]['state'] = state
 
