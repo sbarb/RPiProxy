@@ -78,10 +78,9 @@ def writeLow(pinName):
 def cleanUp():
     global pins
     # turn off all the pins
-    for name, data in pins.iteritems():
-        if data['state']:
-            writeLow(data['pin'])
-            pins[name]['state'] = False
+    for name, data in pins.iteritems():        
+        writeLow(data['pin'])
+        pins[name]['state'] = False
     GPIO.cleanup() # cleanup all gpio 
 
 # Define the flask application
