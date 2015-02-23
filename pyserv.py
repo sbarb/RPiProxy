@@ -53,7 +53,7 @@ def index():
 
 @app.route("/LEDinfo", methods=['POST', 'GET'])
 def LEDinfo():
-  global isOn1, isOn2, isOnpin3, isOnpin4
+  global isOn1, isOn2, isOn3, isOn4
   pin1IsOn = request.form.get('lamp')
   pin2IsOn = request.form.get('led1')
   pin3IsOn = request.form.get('led2')
