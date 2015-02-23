@@ -65,14 +65,14 @@ def LEDinfo():
     isOn1 = writeLow(pin1)
 
   elif pin2IsOn == "ON":
-    isOnLed = writeHigh(pin2)
+    isOn2 = writeHigh(pin2)
   elif pin2IsOn == "OFF": 
-    isOnLed = writeLow(pin2)
+    isOn2 = writeLow(pin2)
 
   elif pin3IsOn == "ON":
-    is2OnLed = writeHigh(pin3)
+    isOn3 = writeHigh(pin3)
   elif pin3IsOn == "OFF": 
-    is2OnLed = writeLow(pin3)
+    isOn3 = writeLow(pin3)
 
   elif pin4IsOn == "ON":
     isOn4 = writeHigh(pin4)
