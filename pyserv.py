@@ -57,9 +57,8 @@ def LEDinfo():
   lampIsOn = request.form.get('Lamp')
   ledIsOn = request.form.get('LED')
   ledIsOn2 = request.form.get('LED2')
-  ledIsOn2 = request.form.get('LED3')
-  # print "Going " + ledIsOn
-
+  ledIsOn3 = request.form.get('LED3')
+  
   if lampIsOn == "ON": 
     isOnLamp = writeHigh(light)
   elif lampIsOn == "OFF": 
@@ -76,14 +75,13 @@ def LEDinfo():
     is2OnLed = writeLow(led2)
 
   elif ledIsOn3 == "ON":
-    is3OnLed = writeHigh(led3)
+    isOnL3ed = writeHigh(led3)
   elif ledIsOn3 == "OFF": 
-    is3OnLed = writeLow(led3)
+    isOn3Led = writeLow(led3)
 
   else:
     print "Got an unexepected request."
   
-  # print ledIsOn
   return redirect('/')
 
 if __name__ == "__main__": 
