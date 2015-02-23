@@ -63,7 +63,7 @@ def writePin(pinName, state):
     if not isPi:
         notAPi("Write " + str(state) + " on pin "+pinName+" #" + str(pins[pinName]['pin']))
         return
-    GPIO.output(pin, state)
+    GPIO.output(pins[pinName]['pin'], state)
 
 def writeHigh(pinName):
     writePin(pinName, True)
