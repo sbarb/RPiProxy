@@ -89,7 +89,10 @@ if __name__ == "__main__":
     app.debug = True
     app.run("0.0.0.0")
     raise KeyboardInterrupt
+    
   finally:
     print "\n\n\nServer Run Complete."
     cleanUp()
     print "GPIO Cleanup Complete"
+
+
