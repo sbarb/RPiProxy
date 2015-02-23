@@ -47,6 +47,8 @@ app = Flask(__name__)
 def index():
   print "/ Light isOn = " + str(isOnLamp)
   print "/ LED isOn = " + str(isOnLed)
+  print "/ LED 3 isOn = " + str(isOn2Led)
+  print "/ LED 3 isOn = " + str(isOn3Led)
   return render_template('index.html', isOnLamp=isOnLamp, isOnLed=isOnLed, isOn2Led=isOn2Led, isOn3Led=isOn3Led)
 
 @app.route("/LEDinfo", methods=['POST', 'GET'])
@@ -54,8 +56,8 @@ def LEDinfo():
   global isOnLamp, isOnLed, isOnLed2, isOnLed3
   lampIsOn = request.form.get('Lamp')
   ledIsOn = request.form.get('LED')
-  led2IsOn = request.form.get('LED2')
-  led3IsOn = request.form.get('LED3')
+  ledIsOn2 = request.form.get('LED2')
+  ledIsOn2 = request.form.get('LED3')
   # print "Going " + ledIsOn
 
   if lampIsOn == "ON": 
@@ -68,14 +70,14 @@ def LEDinfo():
   elif ledIsOn == "OFF": 
     isOnLed = writeLow(led)
 
-  elif led2IsOn == "ON":
+  elif ledIsOn2 == "ON":
     is2OnLed = writeHigh(led2)
-  elif led2IsOn == "OFF": 
+  elif ledIsOn2 == "OFF": 
     is2OnLed = writeLow(led2)
 
-  elif led3IsOn == "ON":
+  elif ledIsOn3 == "ON":
     is3OnLed = writeHigh(led3)
-  elif led3IsOn == "OFF": 
+  elif ledIsOn3 == "OFF": 
     is3OnLed = writeLow(led3)
 
   else:
