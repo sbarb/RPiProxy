@@ -26,7 +26,8 @@ else:
 
 if isPi:
     import RPi.GPIO as GPIO
-
+print "isPi"
+print isPi
 # mapping of physical pin (and human readable name) to the internal GPIO pin numbering
 # ie: {name: data}
 _unordered_pins = {
@@ -75,7 +76,7 @@ def cleanUp():
     # turn off all the pins
     for name, data in pins.iteritems():
         if data['state']:
-            writeLow(data.pin, GPIO.OUT)
+            writeLow(data['pin'], GPIO.OUT)
             pins[name]['state'] = False
     GPIO.cleanup() # cleanup all gpio 
 
