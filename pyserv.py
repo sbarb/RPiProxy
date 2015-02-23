@@ -56,6 +56,7 @@ def initPi():
     #setup pin for output
     for name, data in pins.iteritems():
         GPIO.setup(data['pin'], GPIO.OUT)
+    writeAll(False)
 
 def writePin(pinName, state):
     if state is None:
