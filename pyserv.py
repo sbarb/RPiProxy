@@ -14,6 +14,7 @@ GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
 #setup pin for output
 GPIO.setup(light, GPIO.OUT)
+GPIO.setup(led, GPIO.OUT)
 
 def writeHigh(pin):
   GPIO.output(pin, True)
