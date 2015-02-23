@@ -69,14 +69,14 @@ def LEDinfo():
     isOnLed = writeLow(led)
 
   elif led2IsOn == "ON":
-    isOnLed2 = writeHigh(led2)
+    is2OnLed = writeHigh(led2)
   elif led2IsOn == "OFF": 
-    isOnLed2 = writeLow(led2)
+    is2OnLed = writeLow(led2)
 
   elif led3IsOn == "ON":
-    isOnLed3 = writeHigh(led3)
+    is3OnLed = writeHigh(led3)
   elif led3IsOn == "OFF": 
-    isOnLed3 = writeLow(led3)
+    is3OnLed = writeLow(led3)
 
   else:
     print "Got an unexepected request."
