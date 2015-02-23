@@ -35,22 +35,25 @@ app = Flask(__name__)
 def index():
   print "/ Light isOn = " + str(isOnLight)
   print "/ LED isOn = " + str(isOnLed)
-  return render_template('index.html', isOn=isOnLight)
+  return render_template('index.html', isOnLight=isOnLight, isOnLed=isOnLed)
 
 @app.route("/LEDinfo", methods=['POST', 'GET'])
 def LEDinfo():
-  global isOnLight
+  global isOnLight, isOnLed
+  lampIsOn = request.form.get('Lamp')
   ledIsOn = request.form.get('LED')
   print "Going " + ledIsOn
 
-  if ledIsOn == "ON":
-    isOnLight = writeHigh(light)
-    isOnLed = writeLow(led)
-  elif ledIsOn == "OFF": 
+  if lampIsOn == "ON": 
     isOnLight = writeLow(light)
+  elif lampIsOn == "OFF": 
+    isOnLight = writeLow(light)
+  elif ledIsOn == "ON":
     isOnLed = writeHigh(led)
+  elif ledIsOn == "OFF": 
+    isOnLed = writeLow(led)
   else:
-    print "Got an unexepected request @ /LEDinfo."
+    print "Got an unexepected request."
   
   print ledIsOn
   return redirect('/')
