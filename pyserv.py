@@ -1,96 +1,100 @@
 from flask import Flask, request, render_template, redirect
-from jinja2 import Template
 import RPi.GPIO as GPIO
-import time
+# TODO: rename HTML form names to pins' keys
 
-pin1 = 7
-pin2 = 11
-pin3 = 13
-pin4 = 15
-isOn1 = False
-isOn2 = False
-isOn3 = False
-isOn4 = False
+# Configure if the program is running as a Raspberry pi
+isPi = False # TODO: do env var
 
-#setup gpio pinout using BOARD numbering
-GPIO.setmode(GPIO.BOARD)
-#ignore warnings
-GPIO.setwarnings(False)
-#setup pin for output
-GPIO.setup(pin1, GPIO.OUT)
-GPIO.setup(pin2, GPIO.OUT)
-GPIO.setup(pin3, GPIO.OUT)
-GPIO.setup(pin4, GPIO.OUT)
+# mapping of physical pin (and human readable name) to the internal GPIO pin numbering
+# ie: {name: data}
+pins = {
+  'pin1': { 'pin': 7, 'state': False },
+  'pin2': { 'pin': 11, 'state': False },
+  'pin3': { 'pin': 13, 'state': False },
+  'pin4': { 'pin': 15, 'state': False }
+}
 
-def writeHigh(pin):
-  GPIO.output(pin, True)
-  return True
+# helper function
+def notAPi(body):
+    print "This is not a running on a pi. Skipping a pi feature: " + body
 
-def writeLow(pin):
-  GPIO.output(pin, False)
-  return False
+def makeDebugString(pin_tuple):
+    return "/ "+ pin_tuple[0] +" = " + pin_tuple[1]
+
+def toBoolean(boolStr):
+    if boolStr == "1":
+        return True
+    elif boolStr == "0":
+        return False
+    else
+        return None
+
+def initPi():
+    if not isPi:
+        notAPi("init pi")
+        return
+    #setup gpio pinout using BOARD numbering
+    GPIO.setmode(GPIO.BOARD)
+    #ignore warnings
+    GPIO.setwarnings(False)
+    #setup pin for output
+    for name, data in pins.iteritems():
+        GPIO.setup(data.pin, GPIO.OUT)
+
+def writePin(pinName, state):
+    if state is None:
+        print "Not doing anything. Someone requesting something absurd."
+        return
+    global pins
+    # updates global state
+    pins[pinName].state = state
+    if not isPi:
+        notAPi("Write " + str(state) + " on pin "+pinName+" #" + str(pinName.pin))
+        return
+    GPIO.output(pin, state)
+
+def writeHigh(pinName):
+    writePin(pinName, True)
+
+def writeLow(pinName):
+    writePin(pinName, False)
   
 def cleanUp():
-  if isOn1:
-    writeLow(pin1) # cut pin1 off
-  elif isOn2:
-    writeLow(pin2) # cut pin2 off
-  elif isOn3:
-    writeLow(pin3) # cut pin3 off
-  elif isOn4:
-    writeLow(pin4) # cut pin4 off
-  GPIO.cleanup() # cleanup all gpio 
+    global pins
+    # turn off all the pins
+    for name, data in pins.iteritems():
+        if data.state
+            writeLow(data.pin, GPIO.OUT)
+            pins[name].state = False
+    GPIO.cleanup() # cleanup all gpio 
 
+# Define the flask application
 app = Flask(__name__)
 
 @app.route("/", methods=['GET'])
 def index():
-  print "/ Lamp = pin1 = " + str(isOn1)
-  print "/ LED 1 = pin2 = " + str(isOn2)
-  print "/ LED 2 = pin3 = " + str(isOn3)
-  print "/ LED 3 = pin4 = " + str(isOn4)
-  return render_template('index.html', isOn1=isOn1, isOn2=isOn2, isOn3=isOn3, isOn4=isOn4)
+    # tuple of pin name and state as a string ("pin1", "True")
+    pins_info = (name, str(data.state) for name, data in pins.iteritems())
+    # transform into a list of strings
+    pin_strings = map(pins_info, makeDebugString)
+    # print the strings one line at a time
+    print "\n".join(pin_strings)
+    return render_template('index.html', pins=pins)
 
 @app.route("/LEDinfo", methods=['POST', 'GET'])
 def LEDinfo():
-  global isOn1, isOn2, isOn3, isOn4
-  pin1IsOn = request.form.get('lamp')
-  pin2IsOn = request.form.get('led1')
-  pin3IsOn = request.form.get('led2')
-  pin4IsOn = request.form.get('led3')
-  
-  if pin1IsOn == "1": 
-  	print "light on"
-  	isOn1 = writeHigh(pin1)
-  elif pin1IsOn == "0":
-  	print "light off" 
-    isOn1 = writeLow(pin1)
-
-  elif pin2IsOn == "1":
-  	print "led 1 on"
-    isOn2 = writeHigh(pin2)
-  elif pin2IsOn == "0": 
-  	print "led 1 off"
-    isOn2 = writeLow(pin2)
-
-  elif pin3IsOn == "1":
-  	print "led 2 on"
-    isOn3 = writeHigh(pin3)
-  elif pin3IsOn == "0":
-  	print "led 2 off" 
-    isOn3 = writeLow(pin3)
-
-  elif pin4IsOn == "1":
-    print "led 3 on"
-    isOn4 = writeHigh(pin4)
-  elif pin4IsOn == "0": 
-  	print "led 3 off"
-    isOn4 = writeLow(pin4)
-
-  else:
-    print "Got an unexepected request."
-  
-  return redirect('/')
+    # iterate through list of fields in the submitted form
+    for pinName in request.form.keys():
+        # check if the name of the field is one of the defined pins
+        if pinName not in pins:
+            print "Someone attempted to do something other than toggle a pin."
+            continue # skip this one
+        # deal with the request
+        value = request.form.get(pinName)
+        writePin(pinName, toBoolean(value))
+        else:
+            print "Got an unexepected request."  
+    return redirect('/')
 
 if __name__ == "__main__": 
   try:
