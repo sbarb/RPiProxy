@@ -24,6 +24,9 @@ if 'PI' in os.environ:
 else:
     isPi = False
 
+if isPi:
+    import RPi.GPIO as GPIO
+
 # mapping of physical pin (and human readable name) to the internal GPIO pin numbering
 # ie: {name: data}
 _unordered_pins = {
@@ -36,7 +39,6 @@ _unordered_pins = {
 pins = OrderedDict(sorted(_unordered_pins.items(), key=lambda t: t[1]['weight']))
 
 def initPi():
-    import RPi.GPIO as GPIO
     if not isPi:
         notAPi("init pi")
         return
