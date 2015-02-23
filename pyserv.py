@@ -108,6 +108,7 @@ def LEDinfo():
 
 if __name__ == "__main__": 
   try:
+    initPi()
     app.debug = True
     app.run("0.0.0.0")
     raise KeyboardInterrupt
