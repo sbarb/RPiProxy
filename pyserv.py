@@ -1,20 +1,24 @@
+from collections import OrderedDict
 from flask import Flask, request, render_template, redirect
-import RPi.GPIO as GPIO
 # TODO: rename HTML form names to pins' keys
 
 # Configure if the program is running as a Raspberry pi
 isPi = False # TODO: do env var
+if isPi:
+    import RPi.GPIO as GPIO
 
 # mapping of physical pin (and human readable name) to the internal GPIO pin numbering
 # ie: {name: data}
-pins = {
-  'pin1': { 'pin': 7, 'state': False },
-  'pin2': { 'pin': 11, 'state': False },
-  'pin3': { 'pin': 13, 'state': False },
-  'pin4': { 'pin': 15, 'state': False }
+_unordered_pins = {
+  'pin1': { 'pin': 7, 'state': False, 'weight': 1 },
+  'pin2': { 'pin': 11, 'state': False, 'weight': 2 },
+  'pin3': { 'pin': 13, 'state': False, 'weight': 3 },
+  'pin4': { 'pin': 15, 'state': False, 'weight': 4 }
 }
+# guarantees order during iteration based on the weight key
+pins = OrderedDict(sorted(_unordered_pins.items(), key=lambda t: t[1]['weight']))
 
-# helper function
+# helper functions
 def notAPi(body):
     print "This is not a running on a pi. Skipping a pi feature: " + body
 
@@ -26,7 +30,7 @@ def toBoolean(boolStr):
         return True
     elif boolStr == "0":
         return False
-    else
+    else:
         return None
 
 def initPi():
@@ -47,9 +51,9 @@ def writePin(pinName, state):
         return
     global pins
     # updates global state
-    pins[pinName].state = state
+    pins[pinName]['state'] = state
     if not isPi:
-        notAPi("Write " + str(state) + " on pin "+pinName+" #" + str(pinName.pin))
+        notAPi("Write " + str(state) + " on pin "+pinName+" #" + str(pins[pinName]['pin']))
         return
     GPIO.output(pin, state)
 
@@ -63,7 +67,7 @@ def cleanUp():
     global pins
     # turn off all the pins
     for name, data in pins.iteritems():
-        if data.state
+        if data.state:
             writeLow(data.pin, GPIO.OUT)
             pins[name].state = False
     GPIO.cleanup() # cleanup all gpio 
@@ -73,10 +77,10 @@ app = Flask(__name__)
 
 @app.route("/", methods=['GET'])
 def index():
-    # tuple of pin name and state as a string ("pin1", "True")
-    pins_info = (name, str(data.state) for name, data in pins.iteritems())
+    # list of pin name and state as a string ("pin1", "True")
+    pins_info = [(name, str(data['state'])) for name, data in pins.iteritems()]
     # transform into a list of strings
-    pin_strings = map(pins_info, makeDebugString)
+    pin_strings = [makeDebugString(pin_obj) for pin_obj in pins_info]
     # print the strings one line at a time
     print "\n".join(pin_strings)
     return render_template('index.html', pins=pins)
@@ -92,8 +96,6 @@ def LEDinfo():
         # deal with the request
         value = request.form.get(pinName)
         writePin(pinName, toBoolean(value))
-        else:
-            print "Got an unexepected request."  
     return redirect('/')
 
 if __name__ == "__main__": 
