@@ -3,7 +3,7 @@ from jinja2 import Template
 import RPi.GPIO as GPIO
 import time
 
-isOnLight = False
+isOnLamp = False
 isOnLed = False
 light = 7
 led = 11
@@ -25,7 +25,7 @@ def writeLow(pin):
   return False
   
 def cleanUp():
-  if isOnLight:
+  if isOnLamp:
     writeLow(light) # cut light off
   if isOnLed:
     writeLow(led) # cut led off
@@ -35,21 +35,21 @@ app = Flask(__name__)
 
 @app.route("/", methods=['GET'])
 def index():
-  print "/ Light isOn = " + str(isOnLight)
+  print "/ Light isOn = " + str(isOnLamp)
   print "/ LED isOn = " + str(isOnLed)
-  return render_template('index.html', isOnLight=isOnLight, isOnLed=isOnLed)
+  return render_template('index.html', isOnLamp=isOnLamp, isOnLed=isOnLed)
 
 @app.route("/LEDinfo", methods=['POST', 'GET'])
 def LEDinfo():
-  global isOnLight, isOnLed
+  global isOnLamp, isOnLed
   lampIsOn = request.form.get('Lamp')
   ledIsOn = request.form.get('LED')
   # print "Going " + ledIsOn
 
   if lampIsOn == "ON": 
-    isOnLight = writeHigh(light)
+    isOnLamp = writeHigh(light)
   elif lampIsOn == "OFF": 
-    isOnLight = writeLow(light)
+    isOnLamp = writeLow(light)
   elif ledIsOn == "ON":
     isOnLed = writeHigh(led)
   elif ledIsOn == "OFF": 

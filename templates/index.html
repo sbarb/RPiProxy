@@ -14,7 +14,7 @@
 <form action="LEDinfo" method="POST">
 <div>
   <h1>Cut the Lamp</h1>
-  {% if isOn %}
+  {% if isOnLamp %}
     <p><input class="off" type="submit" name="Lamp" value="OFF"></p>
   {% else %}
     <p><input class="on" type="submit" name="Lamp" value="ON"></p>
@@ -22,7 +22,7 @@
 </div>
 <div>
   <h1>Cut the LED</h1>
-  {% if isOn %}
+  {% if isOnLed %}
     <p><input class="off" type="submit" name="LED" value="OFF"></p>
   {% else %}
     <p><input class="on" type="submit" name="LED" value="ON"></p>
