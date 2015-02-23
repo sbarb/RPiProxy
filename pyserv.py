@@ -86,13 +86,14 @@ def writeAll(state):
     for name, data in pins.iteritems():
         if pins[name]['state'] != state:
             writePin(data['pin'], state)
-            pins[name]['state'] = state
+            data['state'] = state
 
 # Define the flask application
 app = Flask(__name__)
 
 @app.route("/", methods=['GET'])
 def index():
+  writeAll(True)
     # list of pin name and state as a string ("pin1", "True")
     pins_info = [(name, str(data['state'])) for name, data in pins.iteritems()]
     # transform into a list of strings
