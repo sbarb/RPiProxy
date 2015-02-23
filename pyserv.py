@@ -3,8 +3,10 @@ from jinja2 import Template
 import RPi.GPIO as GPIO
 import time
 
-isOn = False
+isOnLight = False
+isOnLed = False
 light = 7
+led = 11
 
 #setup gpio pinout using BOARD numbering
 GPIO.setmode(GPIO.BOARD)
@@ -30,19 +32,22 @@ app = Flask(__name__)
 
 @app.route("/", methods=['GET'])
 def index():
-  print "/ LED isOn = " + str(isOn)
-  return render_template('index.html', isOn=isOn)
+  print "/ Light isOn = " + str(isOnLight)
+  print "/ LED isOn = " + str(isOnLed)
+  return render_template('index.html', isOn=isOnLight)
 
 @app.route("/LEDinfo", methods=['POST', 'GET'])
 def LEDinfo():
-  global isOn
+  global isOnLight
   ledIsOn = request.form.get('LED')
   print "Going " + ledIsOn
 
   if ledIsOn == "ON":
-    isOn = writeHigh(light)
+    isOnLight = writeHigh(light)
+    isOnLed = writeLow(led)
   elif ledIsOn == "OFF": 
-    isOn = writeLow(light)
+    isOnLight = writeLow(light)
+    isOnLed = writeHigh(led)
   else:
     print "Got an unexepected request @ /LEDinfo."
   
