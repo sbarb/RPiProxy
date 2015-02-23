@@ -76,7 +76,7 @@ def cleanUp():
     # turn off all the pins
     for name, data in pins.iteritems():
         if data['state']:
-            writeLow(data['pin'], GPIO.OUT)
+            writeLow(data['pin'])
             pins[name]['state'] = False
     GPIO.cleanup() # cleanup all gpio 
 
