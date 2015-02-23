@@ -2,6 +2,10 @@ h1 {
     padding: 18px;
 }
 
+div {
+	display: inline;
+}
+
 input.off {
 	-moz-box-shadow: 3px 4px 0px 0px #8a2a21;
 	-webkit-box-shadow: 3px 4px 0px 0px #8a2a21;
