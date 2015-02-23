@@ -14,34 +14,34 @@
 <form action="LEDinfo" method="POST">
 <div>
   <h1>Cut the Lamp</h1>
-  {% if isOnLamp %}
-    <p><input class="off" type="submit" name="Lamp" value="OFF"></p>
+  {% if isOn1 %}
+    <p><input class="off" type="submit" name="lamp" value="OFF"></p>
   {% else %}
-    <p><input class="on" type="submit" name="Lamp" value="ON"></p>
+    <p><input class="on" type="submit" name="lamp" value="ON"></p>
   {% endif %}
 </div>
 <div>
   <h1>Cut LED 1</h1>
-  {% if isOnLed %}
-    <p><input class="off" type="submit" name="LED" value="OFF"></p>
+  {% if isOn2 %}
+    <p><input class="off" type="submit" name="led1" value="OFF"></p>
   {% else %}
-    <p><input class="on" type="submit" name="LED" value="ON"></p>
+    <p><input class="on" type="submit" name="led1" value="ON"></p>
   {% endif %}
 </div>
 <div>
   <h1>Cut LED 2</h1>
-  {% if isOn2Led %}
-    <p><input class="off" type="submit" name="LED2" value="OFF"></p>
+  {% if isOn3 %}
+    <p><input class="off" type="submit" name="led2" value="OFF"></p>
   {% else %}
-    <p><input class="on" type="submit" name="LED2" value="ON"></p>
+    <p><input class="on" type="submit" name="led2" value="ON"></p>
   {% endif %}
 </div>
 <div>
   <h1>Cut LED 3</h1>
-  {% if isOn3Led %}
-    <p><input class="off" type="submit" name="LED3" value="OFF"></p>
+  {% if isOn4 %}
+    <p><input class="off" type="submit" name="led3" value="OFF"></p>
   {% else %}
-    <p><input class="on" type="submit" name="LED3" value="ON"></p>
+    <p><input class="on" type="submit" name="led3" value="ON"></p>
   {% endif %}
 </div>
 </form>

@@ -3,24 +3,24 @@ from jinja2 import Template
 import RPi.GPIO as GPIO
 import time
 
-isOnLamp = False
-isOnLed = False
-isOn2Led = False
-isOn3Led = False
-light = 7
-led = 11
-led2 = 13
-led3 = 15
+isOn1 = False
+isOn2 = False
+isOn3 = False
+isOn4 = False
+pin1 = 7
+pin2 = 11
+pin3 = 13
+pin4 = 15
 
 #setup gpio pinout using BOARD numbering
 GPIO.setmode(GPIO.BOARD)
 #ignore warnings
 GPIO.setwarnings(False)
 #setup pin for output
-GPIO.setup(light, GPIO.OUT)
-GPIO.setup(led, GPIO.OUT)
-GPIO.setup(led2, GPIO.OUT)
-GPIO.setup(led3, GPIO.OUT)
+GPIO.setup(pin1, GPIO.OUT)
+GPIO.setup(pin2, GPIO.OUT)
+GPIO.setup(pin3, GPIO.OUT)
+GPIO.setup(pin4, GPIO.OUT)
 
 def writeHigh(pin):
   GPIO.output(pin, True)
@@ -31,53 +31,53 @@ def writeLow(pin):
   return False
   
 def cleanUp():
-  if isOnLamp:
-    writeLow(light) # cut light off
-  elif isOnLed:
-    writeLow(led) # cut led off
-  elif isOn2Led:
-    writeLow(led2) # cut led2 off
-  elif isOn3Led:
-    writeLow(led3) # cut led3 off
+  if isOn1:
+    writeLow(pin1) # cut pin1 off
+  elif isOn2:
+    writeLow(pin2) # cut pin2 off
+  elif isOn3:
+    writeLow(pin3) # cut pin3 off
+  elif isOn4:
+    writeLow(pin4) # cut pin4 off
   GPIO.cleanup() # cleanup all gpio 
 
 app = Flask(__name__)
 
 @app.route("/", methods=['GET'])
 def index():
-  print "/ Light isOn = " + str(isOnLamp)
-  print "/ LED isOn = " + str(isOnLed)
-  print "/ LED 3 isOn = " + str(isOn2Led)
-  print "/ LED 3 isOn = " + str(isOn3Led)
-  return render_template('index.html', isOnLamp=isOnLamp, isOnLed=isOnLed, isOn2Led=isOn2Led, isOn3Led=isOn3Led)
+  print "/ Lamp = pin1 = " + str(isOn1)
+  print "/ LED 1 = pin2 = " + str(isOn2)
+  print "/ LED 2 = pin3 = " + str(isOn3)
+  print "/ LED 3 = pin4 = " + str(isOn4)
+  return render_template('index.html', isOn1=isOn1, isOn2=isOn2, isOn3=isOn3, isOn4=isOn4)
 
 @app.route("/LEDinfo", methods=['POST', 'GET'])
 def LEDinfo():
-  global isOnLamp, isOnLed, isOnLed2, isOnLed3
-  lampIsOn = request.form.get('Lamp')
-  ledIsOn = request.form.get('LED')
-  ledIsOn2 = request.form.get('LED2')
-  ledIsOn3 = request.form.get('LED3')
+  global isOn1, isOn2, isOnpin3, isOnpin4
+  pin1IsOn = request.form.get('lamp')
+  pin2IsOn = request.form.get('led1')
+  pin3IsOn = request.form.get('led2')
+  pin4IsOn = request.form.get('led3')
   
-  if lampIsOn == "ON": 
-    isOnLamp = writeHigh(light)
-  elif lampIsOn == "OFF": 
-    isOnLamp = writeLow(light)
+  if pin1IsOn == "ON": 
+    isOn1 = writeHigh(pin1)
+  elif pin1IsOn == "OFF": 
+    isOn1 = writeLow(pin1)
 
-  elif ledIsOn == "ON":
-    isOnLed = writeHigh(led)
-  elif ledIsOn == "OFF": 
-    isOnLed = writeLow(led)
+  elif pin2IsOn == "ON":
+    isOnLed = writeHigh(pin2)
+  elif pin2IsOn == "OFF": 
+    isOnLed = writeLow(pin2)
 
-  elif ledIsOn2 == "ON":
-    is2OnLed = writeHigh(led2)
-  elif ledIsOn2 == "OFF": 
-    is2OnLed = writeLow(led2)
+  elif pin3IsOn == "ON":
+    is2OnLed = writeHigh(pin3)
+  elif pin3IsOn == "OFF": 
+    is2OnLed = writeLow(pin3)
 
-  elif ledIsOn3 == "ON":
-    isOnL3ed = writeHigh(led3)
-  elif ledIsOn3 == "OFF": 
-    isOn3Led = writeLow(led3)
+  elif pin4IsOn == "ON":
+    isOn4 = writeHigh(pin4)
+  elif pin4IsOn == "OFF": 
+    isOn4 = writeLow(pin4)
 
   else:
     print "Got an unexepected request."
