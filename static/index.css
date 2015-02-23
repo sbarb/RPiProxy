@@ -2,6 +2,23 @@ h1 {
     margin: 5px;
 }
 
+div.logo {
+	text-align: center;
+	display: block;
+	width: 100%;
+}
+
+img {
+	max-width: 150px;
+	max-height: 150px;
+}
+
+/*body {
+	background-image: url(logo.png);
+	background-position:  500px 0px;
+	background-repeat: no-repeat;
+}*/
+
 div {
 	display:inline-block;
 	width: 24%;
