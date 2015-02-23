@@ -37,7 +37,8 @@ def index():
 def LEDinfo():
   global isOn
   ledIsOn = request.form.get('LED')
-
+  print "Going" + ledIsOn
+  
   if ledIsOn == "ON":
     isOn = writeHigh(light)
   elif ledIsOn == "OFF": 
