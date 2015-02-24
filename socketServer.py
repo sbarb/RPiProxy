@@ -175,7 +175,7 @@ class myServer(SocketServer.TCPServer):
         return SocketServer.TCPServer.close_request(self, request_address)
 
 if __name__ == "__main__":
-    HOST, PORT = "localhost", 9999
+    HOST, PORT = "192.168.1.111", 9999
     address = (HOST, PORT)
 
     # Create the server, binding to localhost on port 9999
