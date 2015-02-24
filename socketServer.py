@@ -24,16 +24,6 @@ def toBoolean(boolStr):
     else:
         return None
 
-# Configure if the program is running as a Raspberry pi
-# expected value is 0 or 1
-if 'PI' in os.environ:
-    isPi = toBoolean(os.environ['PI'])
-else:
-    isPi = False
-
-if isPi:
-    import RPi.GPIO as GPIO
-    initPi()
 
 # mapping of physical pin (and human readable name) to the internal GPIO pin numbering
 # ie: {name: data}
@@ -65,6 +55,17 @@ def initPi():
     for name, data in pins.iteritems():
         GPIO.setup(data['pin'], GPIO.OUT)
     writeAll(False)
+
+# Configure if the program is running as a Raspberry pi
+# expected value is 0 or 1
+if 'PI' in os.environ:
+    isPi = toBoolean(os.environ['PI'])
+else:
+    isPi = False
+
+if isPi:
+    import RPi.GPIO as GPIO
+    initPi()
 
 def writePin(pinName, state):
     if state is None:
