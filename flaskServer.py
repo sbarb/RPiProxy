@@ -11,16 +11,16 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # def notAPi(body):
 #     print "This is not a running on a pi. Skipping a pi feature: " + body
 
-# def makeDebugString(pin_tuple):
-#     return "/ "+ pin_tuple[0] +" = " + pin_tuple[1]
+def makeDebugString(pin_tuple):
+    return "/ "+ pin_tuple[0] +" = " + pin_tuple[1]
 
-# def toBoolean(boolStr):
-#     if str(boolStr) == "1":
-#         return True
-#     elif str(boolStr) == "0":
-#         return False
-#     else:
-#         return None
+def toBoolean(boolStr):
+    if str(boolStr) == "1":
+        return True
+    elif str(boolStr) == "0":
+        return False
+    else:
+        return None
 
 # # Configure if the program is running as a Raspberry pi
 # # expected value is 0 or 1
