@@ -107,6 +107,7 @@ def index():
 
 @app.route("/LEDinfo", methods=['POST', 'GET'])
 def LEDinfo():
+    HOST, PORT = "192.168.1.111", 9999
     # iterate through list of fields in the submitted form
     for pinName in request.form.keys():
         # check if the name of the field is one of the defined pins
@@ -115,7 +116,7 @@ def LEDinfo():
             continue # skip this one
         # deal with the request
         state = request.form.get(pinName)
-        data = (pinName, state)
+        data =  " ".join(str(pinName) + str(state))
         # writePin(pinName, toBoolean(value))
         try:
             # Connect to server and send data
