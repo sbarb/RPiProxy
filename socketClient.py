@@ -1,38 +1,21 @@
-import SocketServer
+import socket
+import sys
 
-class EchoRequestHandler(SocketServer.BaseRequestHandler):
+HOST, PORT = "localhost", 9999
+data = " ".join(sys.argv[1:])
 
-    def handle(self):
-        # Echo the back to the client
-        data = self.request.recv(1024)
-        self.request.send(data)
-        return
+# Create a socket (SOCK_STREAM means a TCP socket)
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-if __name__ == '__main__':
-    import socket
-    import threading
+try:
+    # Connect to server and send data
+    sock.connect((HOST, PORT))
+    sock.sendall(data + "\n")
 
-    address = ('localhost', 0) # let the kernel give us a port
-    server = SocketServer.TCPServer(address, EchoRequestHandler)
-    ip, port = server.server_address # find out what port we were given
+    # Receive data from the server and shut down
+    received = sock.recv(1024)
+finally:
+    sock.close()
 
-    t = threading.Thread(target=server.serve_forever)
-    t.setDaemon(True) # don't hang on exit
-    t.start()
-
-    # Connect to the server
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((ip, port))
-
-    # Send the data
-    message = 'Hello, world'
-    print 'Sending : "%s"' % message
-    len_sent = s.send(message)
-
-    # Receive a response
-    response = s.recv(len_sent)
-    print 'Received: "%s"' % response
-
-    # Clean up
-    s.close()
-    server.socket.close()
+print "Sent:     {}".format(data)
+print "Received: {}".format(received)
