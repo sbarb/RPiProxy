@@ -12,7 +12,7 @@
 <form action="LEDinfo" method="POST">
     {% for pinName, data in pins.iteritems() %}
       <div>
-        <h1>{{pinName}}</h1>
+        <h1>{{data.name}}</h1>
         {% if data.state %}
           <input class="offbtn" type="submit" name="{{pinName}}" value="0">
         {% else %}

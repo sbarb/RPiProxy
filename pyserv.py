@@ -98,7 +98,7 @@ def index():
     pin_strings = [makeDebugString(pin_obj) for pin_obj in pins_info]
     # print the strings one line at a time
     print "\n".join(pin_strings)
-    return render_template('index.html', pins=pins['name'])
+    return render_template('index.html', pins=pins)
 
 @app.route("/LEDinfo", methods=['POST', 'GET'])
 def LEDinfo():
