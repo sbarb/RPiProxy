@@ -139,5 +139,4 @@ if __name__ == "__main__":
 
   finally:
     print "\n\n\nServer Run Complete."
-    cleanUp()
-    print "GPIO Cleanup Complete"
+    
