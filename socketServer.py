@@ -127,7 +127,7 @@ class TCPHandler(SocketServer.StreamRequestHandler):
             self.wfile.write(pinName)
             self.wfile.write(state)
             writePin(pinName, toBoolean(state))
-        elif str(pinName) in ("all", "ALL", "All"):
+        elif str(pinName) in ("all", "ALL", "All", "aLL", "alL", "aLl"):
             print "***ELIF EXECUTED***"
             self.wfile.write(pinName)
             self.wfile.write(state)
