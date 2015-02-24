@@ -33,6 +33,7 @@ else:
 
 if isPi:
     import RPi.GPIO as GPIO
+    initPi()
 
 # mapping of physical pin (and human readable name) to the internal GPIO pin numbering
 # ie: {name: data}
