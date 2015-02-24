@@ -43,30 +43,6 @@ _unordered_pins = {
 # guarantees order during iteration based on the weight key
 pins = OrderedDict(sorted(_unordered_pins.items(), key=lambda t: t[1]['weight']))
 
-def initPi():
-    if not isPi:
-        notAPi("init pi")
-        return
-    #setup gpio pinout using BOARD numbering
-    GPIO.setmode(GPIO.BOARD)
-    #ignore warnings
-    GPIO.setwarnings(False)
-    #setup pin for output
-    for name, data in pins.iteritems():
-        GPIO.setup(data['pin'], GPIO.OUT)
-    writeAll(False)
-
-# Configure if the program is running as a Raspberry pi
-# expected value is 0 or 1
-if 'PI' in os.environ:
-    isPi = toBoolean(os.environ['PI'])
-else:
-    isPi = False
-
-if isPi:
-    import RPi.GPIO as GPIO
-    initPi()
-
 def writePin(pinName, state):
     if state is None:
         print "Not doing anything. Someone requesting something absurd."
@@ -95,6 +71,30 @@ def writeAll(state):
     for name, data in pins.iteritems():
         # if data['state'] != state:
         writePin(name, state)
+
+def initPi():
+    if not isPi:
+        notAPi("init pi")
+        return
+    #setup gpio pinout using BOARD numbering
+    GPIO.setmode(GPIO.BOARD)
+    #ignore warnings
+    GPIO.setwarnings(False)
+    #setup pin for output
+    for name, data in pins.iteritems():
+        GPIO.setup(data['pin'], GPIO.OUT)
+    writeAll(False)
+
+# Configure if the program is running as a Raspberry pi
+# expected value is 0 or 1
+if 'PI' in os.environ:
+    isPi = toBoolean(os.environ['PI'])
+else:
+    isPi = False
+
+if isPi:
+    import RPi.GPIO as GPIO
+    initPi()
 
 
 class TCPHandler(SocketServer.StreamRequestHandler):
