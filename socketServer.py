@@ -82,8 +82,8 @@ if __name__ == '__main__':
     # address = ('localhost', 0) # let the kernel give us a port
     # server = EchoServer(address, EchoRequestHandler)
     # ip, port = server.server_address # find out what port we were given
-    ip = 192.168.1.111
-    port = 8888
+    ip = '192.168.1.111'
+    port = '8888'
 
     t = threading.Thread(target=server.serve_forever)
     t.setDaemon(True) # don't hang on exit
