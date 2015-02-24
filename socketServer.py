@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.DEBUG,
 class TCPHandler(SocketServer.StreamRequestHandler):
 
     def __init__(self, request, client_address, server):
-        self.logger = logging.getLogger('EchoRequestHandler')
+        self.logger = logging.getLogger('TCPHandler')
         self.logger.debug('__init__')
         SocketServer.StreamRequestHandler.__init__(self, request, client_address, server)
         return
