@@ -4,11 +4,9 @@ import os
 import socket
 import sys
 
-HOST, PORT = "192.168.1.111", 9999
 # Create a socket (SOCK_STREAM means a TCP socket)
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# Connect to server and send data
-sock.connect((HOST, PORT))
+
 # # helper functions
 # def notAPi(body):
 #     print "This is not a running on a pi. Skipping a pi feature: " + body
@@ -109,6 +107,7 @@ def index():
 
 @app.route("/LEDinfo", methods=['POST', 'GET'])
 def LEDinfo():
+    HOST, PORT = "192.168.1.111", 9999
     # iterate through list of fields in the submitted form
     for pinName in request.form.keys():
         # check if the name of the field is one of the defined pins
@@ -117,14 +116,17 @@ def LEDinfo():
             continue # skip this one
         # deal with the request
         state = request.form.get(pinName)
-        data =  " ".join([str(pinName), str(state)])
-        print "sent data: " + data
+        data =  " ".join(str(pinName) + str(state))
         # writePin(pinName, toBoolean(value))
-        sock.sendall(data + "\n")
+        try:
+            # Connect to server and send data
+            sock.connect((HOST, PORT))
+            sock.sendall(data + "\n")
 
-        # Receive data from the server and shut down
-        received = sock.recv(1024)
-            
+            # Receive data from the server and shut down
+            received = sock.recv(1024)
+        finally:
+            sock.close()
 
         print "Changed {}".format(pinName, state)
         print "Received: {}".format(received)
@@ -137,6 +139,5 @@ if __name__ == "__main__":
     raise KeyboardInterrupt
 
   finally:
-    sock.close()
     print "\n\n\nServer Run Complete."
     
