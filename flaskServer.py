@@ -3,6 +3,7 @@ from flask import Flask, request, render_template, redirect
 import os
 import socket
 import sys
+import errno
 
 # Create a socket (SOCK_STREAM means a TCP socket)
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -116,20 +117,20 @@ def LEDinfo():
             continue # skip this one
         # deal with the request
         state = request.form.get(pinName)
-        data =  " ".join(str(pinName) + str(state))
+        data =  " ".join([str(pinName), str(state)])
         # writePin(pinName, toBoolean(value))
         try:
             # Connect to server and send data
             sock.connect((HOST, PORT))
             sock.sendall(data + "\n")
-
             # Receive data from the server and shut down
             received = sock.recv(1024)
-        finally:
-            sock.close()
-
-        print "Changed {}".format(pinName, state)
-        print "Received: {}".format(received)
+            print "Changed {}".format(pinName, state)
+            print "Received: {}".format(received)
+        except socket.error, v:
+            errorcode=v[0]
+            if errorcode==errno.ECONNREFUSED:
+                print "Connection Refused"
     return redirect('/')
 
 if __name__ == "__main__": 
@@ -137,7 +138,7 @@ if __name__ == "__main__":
     app.debug = True
     app.run("0.0.0.0")
     raise KeyboardInterrupt
-
   finally:
+    print "\nClosint Socket."
+    sock.close()
     print "\n\n\nServer Run Complete."
-    
