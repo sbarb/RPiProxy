@@ -7,24 +7,12 @@ import os
 logging.basicConfig(level=logging.DEBUG,
                     format='%(name)s: %(message)s',
                     )
+# set the socket host and port addresses
+socketHost, socketPort = "192.168.1.111", 9999
+    address = (socketHost, socketPort)
+
 ############################################
-# Pi functions
-# helper functions
-def notAPi(body):
-    print "This is not a running on a pi. Skipping a pi feature: " + body
-
-def makeDebugString(pin_tuple):
-    return "/ "+ pin_tuple[0] +" = " + pin_tuple[1]
-
-def toBoolean(boolStr):
-    if str(boolStr) == "1":
-        return True
-    elif str(boolStr) == "0":
-        return False
-    else:
-        return None
-
-
+# Pi helper functions
 # mapping of physical pin (and human readable name) to the internal GPIO pin numbering
 # ie: {name: data}
 _unordered_pins = {
@@ -42,7 +30,21 @@ _unordered_pins = {
 }
 # guarantees order during iteration based on the weight key
 pins = OrderedDict(sorted(_unordered_pins.items(), key=lambda t: t[1]['weight']))
+# determins if the host is a RPi or not
+def notAPi(body):
+    print "This is not a running on a pi. Skipping a pi feature: " + body
 
+def makeDebugString(pin_tuple):
+    return "/ "+ pin_tuple[0] +" = " + pin_tuple[1]
+# converts string '1' or '0' to bool True or False
+def toBoolean(boolStr):
+    if str(boolStr) == "1":
+        return True
+    elif str(boolStr) == "0":
+        return False
+    else: # Any input that is not '1' or '0' will return None
+        return None
+# Tell 'pinName' to be in state 'state'
 def writePin(pinName, state):
     if state is None:
         print "Not doing anything. Someone requesting something absurd."
@@ -54,24 +56,25 @@ def writePin(pinName, state):
         notAPi("Write " + str(state) + " on pin "+pinName+" #" + str(pins[pinName]['pin']))
         return
     GPIO.output(pins[pinName]['pin'], state)
-
+# Write High for 'pinName'
 def writeHigh(pinName):
     writePin(pinName, True)
-
+# Write Low for 'pinName'
 def writeLow(pinName):
     writePin(pinName, False)
-  
+# Write 'state' for ALL pins
+def writeAll(state):
+    for name, data in pins.iteritems():
+        # if data['state'] != state:
+        writePin(name, state)
+# Cut off and cleanup (remove) all gpio pins 
 def cleanUp():
     global pins
     # turn off all the pins
     writeAll(False)
     GPIO.cleanup() # cleanup all gpio 
-
-def writeAll(state):
-    for name, data in pins.iteritems():
-        # if data['state'] != state:
-        writePin(name, state)
-
+# If this host is a RPi this will initialize the gpio pins
+# and set start the program with all pins OFF
 def initPi():
     if not isPi:
         notAPi("init pi")
@@ -87,16 +90,18 @@ def initPi():
 
 # Configure if the program is running as a Raspberry pi
 # expected value is 0 or 1
+#### this is where the environment variable is processed
 if 'PI' in os.environ:
     isPi = toBoolean(os.environ['PI'])
 else:
     isPi = False
 
 if isPi:
-    import RPi.GPIO as GPIO
+    imsocketPort RPi.GPIO as GPIO
     initPi()
-
-
+# End Pi helper functions
+############################################
+# socket data helper functions
 class TCPHandler(SocketServer.StreamRequestHandler):
 
     def __init__(self, request, client_address, server):
@@ -136,7 +141,9 @@ class TCPHandler(SocketServer.StreamRequestHandler):
     def finish(self):
         self.logger.debug('finish')
         return SocketServer.StreamRequestHandler.finish(self)
-
+# End socket data helper functions
+############################################
+# socket helper functions
 class myServer(SocketServer.TCPServer):
     
     def __init__(self, server_address, handler_class=TCPHandler):
@@ -180,16 +187,15 @@ class myServer(SocketServer.TCPServer):
     def close_request(self, request_address):
         self.logger.debug('close_request(%s)', request_address)
         return SocketServer.TCPServer.close_request(self, request_address)
-
+# End socket helper functions
+############################################
+# Start the program
 if __name__ == "__main__":
-    HOST, PORT = "192.168.1.111", 9999
-    address = (HOST, PORT)
-
-    # Create the server, binding to localhost on port 9999
-    server = myServer((HOST, PORT), TCPHandler)
+    # Create the server, binding to localsocketHost on socketPort 9999
+    server = myServer((socketHost, socketPort), TCPHandler)
     
     logger = logging.getLogger('client')
-    logger.info('Server on %s:%s', HOST, PORT)
+    logger.info('Socket Server running on %s:%s', socketHost, socketPort)
 
     # Activate the server; this will keep running until you
     # interrupt the program with Ctrl-C
@@ -201,8 +207,7 @@ if __name__ == "__main__":
     pin_strings = [makeDebugString(pin_obj) for pin_obj in pins_info]
     # print the strings one line at a time
     print "\n".join(pin_strings)
-
-    
+    # close the socket
     sock.close()
     print "\n\n\nServer Run Complete."
     
