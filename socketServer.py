@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.DEBUG,
                     )
 # set the socket host and port addresses
 socketHost, socketPort = "192.168.1.111", 9999
-    address = (socketHost, socketPort)
+address = (socketHost, socketPort)
 
 ############################################
 # Pi helper functions
