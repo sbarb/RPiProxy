@@ -191,7 +191,7 @@ class myServer(SocketServer.TCPServer):
 ############################################
 # Start the program
 if __name__ == "__main__":
-    # Create the server, binding to localsocketHost on socketPort 9999
+    # Create the server, binding to socketHost on socketPort 
     server = myServer((socketHost, socketPort), TCPHandler)
     
     logger = logging.getLogger('client')
