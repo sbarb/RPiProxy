@@ -121,7 +121,7 @@ class TCPHandler(SocketServer.StreamRequestHandler):
         print "State {}".format(state)
         # Likewise, self.wfile is a file-like object used to write back
         # to the client
-        self.wfile.write(self.data.upper())
+        self.wfile.write(self.data)
         if pinName in pins:
             print "***IF EXECUTED***"
             self.wfile.write(pinName)

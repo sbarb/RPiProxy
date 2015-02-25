@@ -54,6 +54,12 @@ _unordered_pins = {
 # guarantees order during iteration based on the weight key
 pins = OrderedDict(sorted(_unordered_pins.items(), key=lambda t: t[1]['weight']))
 
+updatePins(inputRecieved):
+    global pins
+    pinName = inputRecieved.split(" ")[0]
+    state = inputRecieved.split(" ")[1]
+    pins[pinName]['state'] = state
+
 # def initPi():
 #     if not isPi:
 #         notAPi("init pi")
@@ -125,6 +131,8 @@ def LEDinfo():
             sock.sendall(data + "\n")
             # Receive data from the server and shut down
             received = sock.recv(1024)
+            # update the client
+            updatePins(received)
             print "Changed {}".format(pinName, state)
             print "Received: {}".format(received)
         except socket.error, v:
