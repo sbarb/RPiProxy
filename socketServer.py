@@ -97,7 +97,7 @@ else:
     isPi = False
 
 if isPi:
-    imsocketPort RPi.GPIO as GPIO
+    import RPi.GPIO as GPIO
     initPi()
 # End Pi helper functions
 ############################################
