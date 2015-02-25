@@ -54,11 +54,14 @@ _unordered_pins = {
 # guarantees order during iteration based on the weight key
 pins = OrderedDict(sorted(_unordered_pins.items(), key=lambda t: t[1]['weight']))
 
-updatePins(inputRecieved):
+def updatePins(inputRecieved):
     global pins
     pinName = inputRecieved.split(" ")[0]
     state = inputRecieved.split(" ")[1]
+    state = toBoolean(state)
     pins[pinName]['state'] = state
+    print "Changed {}".format(pinName, state)
+    print "Received: {}".format(inputRecieved)
 
 # def initPi():
 #     if not isPi:
@@ -133,8 +136,7 @@ def LEDinfo():
             received = sock.recv(1024)
             # update the client
             updatePins(received)
-            print "Changed {}".format(pinName, state)
-            print "Received: {}".format(received)
+            
         except socket.error, v:
             errorcode=v[0]
             if errorcode==errno.ECONNREFUSED:
@@ -147,6 +149,6 @@ if __name__ == "__main__":
     app.run("0.0.0.0")
     raise KeyboardInterrupt
   finally:
-    print "\nClosint Socket."
+    print "\nClosing Socket."
     sock.close()
     print "\n\n\nServer Run Complete."
