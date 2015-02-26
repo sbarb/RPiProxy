@@ -141,8 +141,15 @@ class TCPHandler(SocketServer.StreamRequestHandler):
         else:
             print "*** SOMETHING ISN'T RIGHT ***"
     def finish(self):
-        self.logger.debug('finish')
-        return SocketServer.StreamRequestHandler.finish(self)
+        try:
+            self.logger.debug('finish')
+            return SocketServer.StreamRequestHandler.finish(self)
+        except socket.error, v:
+            errorcode=v[0]
+            if errorcode == errno.ECONNREFUSED:
+                print "Connection Refused"
+            elif errorcode == errno.EPIPE: 
+                print "Broken Pipe"
 # End socket data helper functions
 ############################################
 # socket functions
@@ -217,12 +224,7 @@ if __name__ == "__main__":
         # print the strings one line at a time
         print "\n".join(pin_strings)
         # raise KeyboardInterrupt  
-    except socket.error, v:
-            errorcode=v[0]
-            if errorcode == errno.ECONNREFUSED:
-                print "Connection Refused"
-            elif errorcode == errno.EPIPE: 
-                print "Broken Pipe"
+   
     except KeyboardInterrupt as stop:    
         print "\nClosing Socket."
         # close the socket
