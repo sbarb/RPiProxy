@@ -3,6 +3,7 @@ import sys
 import SocketServer
 from collections import OrderedDict
 import os
+import socket, threading
 
 logging.basicConfig(level=logging.DEBUG,
                     format='%(name)s: %(message)s',
