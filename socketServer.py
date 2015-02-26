@@ -142,7 +142,7 @@ class TCPHandler(SocketServer.StreamRequestHandler):
 # End socket data helper functions
 ############################################
 # socket helper functions
-class myServer(SocketServer.TCPServer):
+class Socket(SocketServer.TCPServer):
     
     def __init__(self, server_address, handler_class=TCPHandler):
         self.logger = logging.getLogger('EchoServer')
@@ -191,8 +191,8 @@ class myServer(SocketServer.TCPServer):
 socketHost, socketPort = "192.168.1.111", 9999
 address = (socketHost, socketPort)
 # Create the server, binding to socketHost on socketPort 
-socketServer = myServer((socketHost, socketPort), TCPHandler)
- 
+socketServer = Socket((socketHost, socketPort), TCPHandler)
+
 # Start the program
 if __name__ == "__main__":
     global socketServer
