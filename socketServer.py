@@ -227,6 +227,6 @@ if __name__ == "__main__":
     except KeyboardInterrupt as stop:    
         print "\nClosing Socket."
         # close the socket
-        socket.close()
+        socketServer.socket.close()
         print "\n\n\nServer Run Complete."
     
