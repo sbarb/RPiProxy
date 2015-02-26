@@ -144,10 +144,11 @@ def LEDinfo():
     return redirect('/')
 
 if __name__ == "__main__": 
+  global sock
   try:
     app.debug = True
     app.run("0.0.0.0")
   except KeyboardInterrupt as stop:
     print "\nClosing Socket."
-    socket.close()
+    sock.close()
     print "\n\n\nServer Run Complete."

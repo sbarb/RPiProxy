@@ -187,12 +187,15 @@ class SocketHandler(SocketServer.TCPServer):
         self.logger.debug('close_request(%s)', request_address)
         return SocketServer.TCPServer.close_request(self, request_address)
 # End socket functions
+
 ############################################
+
 # set the socket host and port addresses
 socketHost, socketPort = "192.168.1.111", 9999
 address = (socketHost, socketPort)
+
 # Create the server, binding to socketHost on socketPort 
-socketServer = SocketHandler((socketHost, socketPort), TCPHandler)
+socketServer = SocketHandler(address, TCPHandler)
 
 # Start the program
 if __name__ == "__main__":
