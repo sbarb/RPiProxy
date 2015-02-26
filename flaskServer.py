@@ -139,7 +139,7 @@ def LEDinfo():
             
         except socket.error, v:
             errorcode=v[0]
-            if errorcode==errno.ECONNREFUSED:
+            if errorcode == errno.ECONNREFUSED:
                 print "Connection Refused"
     return redirect('/')
 

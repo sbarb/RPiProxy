@@ -4,6 +4,7 @@ import SocketServer
 from collections import OrderedDict
 import os
 import socket, threading
+import errno
 
 logging.basicConfig(level=logging.DEBUG,
                     format='%(name)s: %(message)s',
@@ -215,7 +216,13 @@ if __name__ == "__main__":
         pin_strings = [makeDebugString(pin_obj) for pin_obj in pins_info]
         # print the strings one line at a time
         print "\n".join(pin_strings)
-        # raise KeyboardInterrupt    
+        # raise KeyboardInterrupt  
+    except socket.error, v:
+            errorcode=v[0]
+            if errorcode == errno.ECONNREFUSED:
+                print "Connection Refused"
+            elif errorcode == errno.EPIPE: 
+                print "Broken Pipe"
     except KeyboardInterrupt as stop:    
         print "\nClosing Socket."
         # close the socket
