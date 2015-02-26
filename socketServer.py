@@ -153,7 +153,7 @@ class TCPHandler(SocketServer.StreamRequestHandler):
 socketHost, socketPort = "192.168.1.111", 9999
 
 # Create the server, binding to socketHost on socketPort 
-socketServer = SocketServer.TCPServer((HOST, PORT), TCPHandler)
+socketServer = SocketServer.TCPServer((socketHost, socketPort), TCPHandler)
 # socketServer = SocketServer.TCPServer(address, TCPHandler)
 # Start the program
 if __name__ == "__main__":
