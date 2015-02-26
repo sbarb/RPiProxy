@@ -131,17 +131,18 @@ class TCPHandler(SocketServer.StreamRequestHandler):
             self.wfile.write(pins)
             writePin(pinName, toBoolean(state))
         elif str(pinName) in ("all", "ALL", "All", "aLL", "alL", "aLl"):
-            print "***ELIF EXECUTED***"
+            print "***ELIF (ALL) EXECUTED***"
             self.wfile.write(pinName)
             self.wfile.write(state)
             writeAll(toBoolean(state))
-
+        else
+            print "*** SOMETHING ISN'T RIGHT ***"
     def finish(self):
         self.logger.debug('finish')
         return SocketServer.StreamRequestHandler.finish(self)
 # End socket data helper functions
 ############################################
-# socket helper functions
+# socket functions
 class SocketHandler(SocketServer.TCPServer):
     
     def __init__(self, server_address, handler_class=TCPHandler):
@@ -185,7 +186,7 @@ class SocketHandler(SocketServer.TCPServer):
     def close_request(self, request_address):
         self.logger.debug('close_request(%s)', request_address)
         return SocketServer.TCPServer.close_request(self, request_address)
-# End socket helper functions
+# End socket functions
 ############################################
 # set the socket host and port addresses
 socketHost, socketPort = "192.168.1.111", 9999

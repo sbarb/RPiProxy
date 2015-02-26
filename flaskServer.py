@@ -147,7 +147,7 @@ if __name__ == "__main__":
   try:
     app.debug = True
     app.run("0.0.0.0")
-  finally:
+  except KeyboardInterrupt as stop:
     print "\nClosing Socket."
     socket.close()
     print "\n\n\nServer Run Complete."
