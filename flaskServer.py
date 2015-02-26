@@ -4,6 +4,7 @@ import os
 import socket
 import sys
 import errno
+import select
 
 HOST, PORT = "192.168.1.111", 9999
 # Create a socket (SOCK_STREAM means a TCP socket)
@@ -135,21 +136,36 @@ def LEDinfo():
         state = request.form.get(pinName)
         data =  " ".join([str(pinName), str(state)])
         # writePin(pinName, toBoolean(value))
-        try:
-            print "data = " + data
-            sock.sendall(data + "\n")
-            print "Sent " + data
-            # Receive data from the server and shut down
-            received = sock.recv(1024)
-            # update the client
-            updatePins(received)
-            
-        except socket.error, v:
-            errorcode=v[0]
-            if errorcode == errno.ECONNREFUSED:
-                print "Connection Refused"
-            elif errorcode == errno.EPIPE: 
-                print "Broken Pipe"
+        while True:
+            try:
+                r_read, r_write, in_err = \
+                select.select([r_read,], [r_write,], [], 5)
+            except select.error:
+                sock.shutdown(2)    # 0 = done receiving, 1 = done sending, 2 = both
+                sock.close()
+                # connection error event here, maybe reconnect
+                print 'connection error'
+                break
+            try:
+                if len(ready_to_read) > 0:
+                    received = sock.recv(2048)
+                    # update the client
+                    print 'received:', received
+                    updatePins(received)
+                if len(ready_to_write) > 0:
+                    # connection established, send some stuff
+                    print "data = " + data
+                    sock.sendall(data + "\n")
+                    print "Sent " + data
+
+            except socket.error, v:
+                errorcode=v[0]
+                if errorcode == errno.ECONNREFUSED:
+                    print "Connection Refused"
+                elif errorcode == errno.EPIPE: 
+                    print "Broken Pipe"
+                    return redirect('/')
+
 
     return redirect('/')
 
