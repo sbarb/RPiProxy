@@ -7,12 +7,7 @@ import os
 logging.basicConfig(level=logging.DEBUG,
                     format='%(name)s: %(message)s',
                     )
-# set the socket host and port addresses
-socketHost, socketPort = "192.168.1.111", 9999
-address = (socketHost, socketPort)
-# Create the server, binding to socketHost on socketPort 
-socketServer = myServer((socketHost, socketPort), TCPHandler)
-    
+   
 ############################################
 # Pi helper functions
 # mapping of physical pin (and human readable name) to the internal GPIO pin numbering
@@ -192,6 +187,12 @@ class myServer(SocketServer.TCPServer):
         return SocketServer.TCPServer.close_request(self, request_address)
 # End socket helper functions
 ############################################
+# set the socket host and port addresses
+socketHost, socketPort = "192.168.1.111", 9999
+address = (socketHost, socketPort)
+# Create the server, binding to socketHost on socketPort 
+socketServer = myServer((socketHost, socketPort), TCPHandler)
+ 
 # Start the program
 if __name__ == "__main__":
     global socketServer
