@@ -206,7 +206,7 @@ address = (socketHost, socketPort)
 
 # Create the server, binding to socketHost on socketPort 
 # socketServer = SocketHandler(address, TCPHandler)
-socketServer = SocketServer.ThreadingTCPServer(address, MyTCPHandler)
+socketServer = SocketServer.ThreadingTCPServer(address, TCPHandler)
 # Start the program
 if __name__ == "__main__":
     global socketServer
