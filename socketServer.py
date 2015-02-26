@@ -117,7 +117,8 @@ class TCPHandler(SocketServer.StreamRequestHandler):
         # self.data = self.rfile.readline().strip()
         
         # get input with wait if no data
-
+        self.data = self.request.recv(self.BUFFER_SIZE)
+        #suspect many more data (try to get all - without stop if no data)
         if (len(self.data)==self.BUFFER_SIZE):
             while 1:
                 try: #error means no more data
@@ -205,7 +206,7 @@ address = (socketHost, socketPort)
 
 # Create the server, binding to socketHost on socketPort 
 # socketServer = SocketHandler(address, TCPHandler)
-socketServer = SocketServer.ThreadingTCPServer(address, TCPHandler)
+socketServer = SocketServer.ThreadingTCPServer(address, MyTCPHandler)
 # Start the program
 if __name__ == "__main__":
     global socketServer
