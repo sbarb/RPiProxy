@@ -204,8 +204,8 @@ socketHost, socketPort = "192.168.1.111", 9999
 address = (socketHost, socketPort)
 
 # Create the server, binding to socketHost on socketPort 
-socketServer = SocketHandler(address, TCPHandler)
-
+# socketServer = SocketHandler(address, TCPHandler)
+socketServer = SocketServer.ThreadingTCPServer(address, TCPHandler)
 # Start the program
 if __name__ == "__main__":
     global socketServer
