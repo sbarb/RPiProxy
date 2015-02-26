@@ -2,6 +2,8 @@ import logging
 import sys
 import SocketServer
 from collections import OrderedDict
+import os
+import socket, threading
 import errno
 
 logging.basicConfig(level=logging.DEBUG,
@@ -133,45 +135,90 @@ class TCPHandler(SocketServer.StreamRequestHandler):
             writeAll(toBoolean(state))
         else:
             print "*** SOMETHING ISN'T RIGHT ***"
-    # def finish(self):
-    #     try:
-    #         self.logger.debug('finish')
-    #         return SocketServer.StreamRequestHandler.finish(self)
-    #     except socket.error, v:
-    #         errorcode=v[0]
-    #         if errorcode == errno.ECONNREFUSED:
-    #             print "Connection Refused"
-    #         elif errorcode == errno.EPIPE: 
-    #             print "Broken Pipe"
+    def finish(self):
+        try:
+            self.logger.debug('finish')
+            return SocketServer.StreamRequestHandler.finish(self)
+        except socket.error, v:
+            errorcode=v[0]
+            if errorcode == errno.ECONNREFUSED:
+                print "Connection Refused"
+            elif errorcode == errno.EPIPE: 
+                print "Broken Pipe"
 # End socket data helper functions
 ############################################
+# socket functions
+class SocketHandler(SocketServer.TCPServer):
+    
+    def __init__(self, server_address, handler_class=TCPHandler):
+        self.logger = logging.getLogger('EchoServer')
+        self.logger.debug('__init__')
+        SocketServer.TCPServer.__init__(self, server_address, handler_class)
+        return
+
+    def server_activate(self):
+        self.logger.debug('server_activate')
+        SocketServer.TCPServer.server_activate(self)
+        return
+
+    def serve_forever(self):
+        self.logger.debug('waiting for request')
+        self.logger.info('Handling requests, press <Ctrl-C> to quit')
+        while True:
+            self.handle_request()
+        return
+
+    def handle_request(self):
+        self.logger.debug('handle_request')
+        return SocketServer.TCPServer.handle_request(self)
+
+    def verify_request(self, request, client_address):
+        self.logger.debug('verify_request(%s, %s)', request, client_address)
+        return SocketServer.TCPServer.verify_request(self, request, client_address)
+
+    def process_request(self, request, client_address):
+        self.logger.debug('process_request(%s, %s)', request, client_address)
+        return SocketServer.TCPServer.process_request(self, request, client_address)
+
+    def server_close(self):
+        self.logger.debug('server_close')
+        return SocketServer.TCPServer.server_close(self)
+
+    def finish_request(self, request, client_address):
+        self.logger.debug('finish_request(%s, %s)', request, client_address)
+        return SocketServer.TCPServer.finish_request(self, request, client_address)
+
+    def close_request(self, request_address):
+        self.logger.debug('close_request(%s)', request_address)
+        return SocketServer.TCPServer.close_request(self, request_address)
+# End socket functions
 
 ############################################
 
 # set the socket host and port addresses
 socketHost, socketPort = "192.168.1.111", 9999
-
+address = (socketHost, socketPort)
 # Create the server, binding to socketHost on socketPort 
-socketServer = SocketServer.TCPServer((HOST, PORT), TCPHandler)
+socketServer = SocketHandler(address, TCPHandler)
 # socketServer = SocketServer.TCPServer(address, TCPHandler)
 # Start the program
 if __name__ == "__main__":
     global socketServer
     try:
-        logger = logging.getLogger('Socket Server')
+        logger = logging.getLogger('client')
         logger.info('Socket Server running on %s:%s', socketHost, socketPort)
 
         # Activate the server; this will keep running until you
         # interrupt the program with Ctrl-C
         socketServer.serve_forever()
 
-        # # list of pin name and state as a string ("pin1", "True")
-        # pins_info = [(name, str(data['state'])) for name, data in pins.iteritems()]
-        # # transform into a list of strings
-        # pin_strings = [makeDebugString(pin_obj) for pin_obj in pins_info]
-        # # print the strings one line at a time
-        # print "\n".join(pin_strings)
-        # # raise KeyboardInterrupt  
+        # list of pin name and state as a string ("pin1", "True")
+        pins_info = [(name, str(data['state'])) for name, data in pins.iteritems()]
+        # transform into a list of strings
+        pin_strings = [makeDebugString(pin_obj) for pin_obj in pins_info]
+        # print the strings one line at a time
+        print "\n".join(pin_strings)
+        # raise KeyboardInterrupt  
    
     except KeyboardInterrupt as stop:    
         print "\nClosing Socket."

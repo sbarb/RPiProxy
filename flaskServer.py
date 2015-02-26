@@ -138,6 +138,7 @@ def LEDinfo():
         try:
             print "data = " + data
             sock.sendall(data + "\n")
+            print "Sent " + data
             # Receive data from the server and shut down
             received = sock.recv(1024)
             # update the client
