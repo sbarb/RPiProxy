@@ -10,7 +10,9 @@ logging.basicConfig(level=logging.DEBUG,
 # set the socket host and port addresses
 socketHost, socketPort = "192.168.1.111", 9999
 address = (socketHost, socketPort)
-
+# Create the server, binding to socketHost on socketPort 
+socketServer = myServer((socketHost, socketPort), TCPHandler)
+    
 ############################################
 # Pi helper functions
 # mapping of physical pin (and human readable name) to the internal GPIO pin numbering
@@ -192,23 +194,25 @@ class myServer(SocketServer.TCPServer):
 ############################################
 # Start the program
 if __name__ == "__main__":
-    # Create the server, binding to socketHost on socketPort 
-    server = myServer((socketHost, socketPort), TCPHandler)
-    
-    logger = logging.getLogger('client')
-    logger.info('Socket Server running on %s:%s', socketHost, socketPort)
+    global socketServer
+    try:
+        logger = logging.getLogger('client')
+        logger.info('Socket Server running on %s:%s', socketHost, socketPort)
 
-    # Activate the server; this will keep running until you
-    # interrupt the program with Ctrl-C
-    server.serve_forever()
+        # Activate the server; this will keep running until you
+        # interrupt the program with Ctrl-C
+        socketServer.serve_forever()
 
-    # list of pin name and state as a string ("pin1", "True")
-    pins_info = [(name, str(data['state'])) for name, data in pins.iteritems()]
-    # transform into a list of strings
-    pin_strings = [makeDebugString(pin_obj) for pin_obj in pins_info]
-    # print the strings one line at a time
-    print "\n".join(pin_strings)
-    # close the socket
-    sock.close()
-    print "\n\n\nServer Run Complete."
+        # list of pin name and state as a string ("pin1", "True")
+        pins_info = [(name, str(data['state'])) for name, data in pins.iteritems()]
+        # transform into a list of strings
+        pin_strings = [makeDebugString(pin_obj) for pin_obj in pins_info]
+        # print the strings one line at a time
+        print "\n".join(pin_strings)
+        raise KeyboardInterrupt    
+    except KeyboardInterrupt as stop:    
+        print "\nClosing Socket."
+        # close the socket
+        sock.close()
+        print "\n\n\nServer Run Complete."
     
