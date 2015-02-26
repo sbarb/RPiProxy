@@ -114,9 +114,18 @@ class TCPHandler(SocketServer.StreamRequestHandler):
     def handle(self):
         # self.rfile is a file-like object created by the handler;
         # we can now use e.g. readline() instead of raw recv() calls
-        self.data = self.rfile.readline().strip()
-        pinName = self.data.split(" ")[0]
-        state = self.data.split(" ")[1]
+        # self.data = self.rfile.readline().strip()
+        
+        # get input with wait if no data
+
+        if (len(self.data)==self.BUFFER_SIZE):
+            while 1:
+                try: #error means no more data
+                    pinName = self.data.split(" ")[0]
+                    state = self.data.split(" ")[1]
+                    data += self.request.recv(self.BUFFER_SIZE, socket.MSG_DONTWAIT)
+                except:
+                    break
         print "{} wrote:".format(self.client_address[0])
         print self.data
         print "Pin Name {}".format(pinName)
