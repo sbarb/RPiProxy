@@ -210,7 +210,7 @@ if __name__ == "__main__":
         pin_strings = [makeDebugString(pin_obj) for pin_obj in pins_info]
         # print the strings one line at a time
         print "\n".join(pin_strings)
-        raise KeyboardInterrupt    
+        # raise KeyboardInterrupt    
     except KeyboardInterrupt as stop:    
         print "\nClosing Socket."
         # close the socket
