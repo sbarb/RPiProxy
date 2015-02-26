@@ -120,6 +120,7 @@ def index():
 
 @app.route("/LEDinfo", methods=['POST', 'GET'])
 def LEDinfo():
+    global sock
     # iterate through list of fields in the submitted form
     for pinName in request.form.keys():
         # check if the name of the field is one of the defined pins
@@ -146,7 +147,6 @@ def LEDinfo():
     return redirect('/')
 
 if __name__ == "__main__": 
-  global sock
   try:
     app.debug = True
     app.run("0.0.0.0")
