@@ -115,27 +115,12 @@ class TCPHandler(SocketServer.StreamRequestHandler):
     def handle(self):
         # self.rfile is a file-like object created by the handler;
         # we can now use e.g. readline() instead of raw recv() calls
-<<<<<<< HEAD
-        # self.data = self.rfile.readline().strip()
-        
-        # get input with wait if no data
-        data = self.request.recv(self.BUFFER_SIZE)
-        #suspect many more data (try to get all - without stop if no data)
-        if (len(data)==self.BUFFER_SIZE):
-            while 1:
-                try: #error means no more data
-                    pinName = data.split(" ")[0]
-                    state = data.split(" ")[1]
-                    data += self.request.recv(self.BUFFER_SIZE, socket.MSG_DONTWAIT)
-                except:
-                    break
-=======
         self.data = self.rfile.readline().strip()
+        
         pinName = self.data.split(" ")[0]
         state = self.data.split(" ")[1]
->>>>>>> parent of 9fcf979... trying something different
+
         print "{} wrote:".format(self.client_address[0])
-        print data
         print "Pin Name {}".format(pinName)
         print "State {}".format(state)
         # Likewise, self.wfile is a file-like object used to write back
@@ -152,7 +137,7 @@ class TCPHandler(SocketServer.StreamRequestHandler):
             self.wfile.write(pinName)
             self.wfile.write(state)
             writeAll(toBoolean(state))
-        else
+        else:
             print "*** SOMETHING ISN'T RIGHT ***"
     def finish(self):
         self.logger.debug('finish')
@@ -210,10 +195,9 @@ class SocketHandler(SocketServer.TCPServer):
 # set the socket host and port addresses
 socketHost, socketPort = "192.168.1.111", 9999
 address = (socketHost, socketPort)
-
 # Create the server, binding to socketHost on socketPort 
-# socketServer = SocketHandler(address, TCPHandler)
-socketServer = SocketServer.ThreadingTCPServer(address, TCPHandler)
+socketServer = SocketHandler(address, TCPHandler)
+
 # Start the program
 if __name__ == "__main__":
     global socketServer
