@@ -115,6 +115,7 @@ class TCPHandler(SocketServer.StreamRequestHandler):
     def handle(self):
         # self.rfile is a file-like object created by the handler;
         # we can now use e.g. readline() instead of raw recv() calls
+<<<<<<< HEAD
         # self.data = self.rfile.readline().strip()
         
         # get input with wait if no data
@@ -128,6 +129,11 @@ class TCPHandler(SocketServer.StreamRequestHandler):
                     data += self.request.recv(self.BUFFER_SIZE, socket.MSG_DONTWAIT)
                 except:
                     break
+=======
+        self.data = self.rfile.readline().strip()
+        pinName = self.data.split(" ")[0]
+        state = self.data.split(" ")[1]
+>>>>>>> parent of 9fcf979... trying something different
         print "{} wrote:".format(self.client_address[0])
         print data
         print "Pin Name {}".format(pinName)
