@@ -141,6 +141,8 @@ def LEDinfo():
             errorcode=v[0]
             if errorcode == errno.ECONNREFUSED:
                 print "Connection Refused"
+            elif errorcode == errno.EPIPE: 
+                print "Broken Pipe"
     return redirect('/')
 
 if __name__ == "__main__": 
