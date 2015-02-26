@@ -56,12 +56,16 @@ pins = OrderedDict(sorted(_unordered_pins.items(), key=lambda t: t[1]['weight'])
 
 def updatePins(inputRecieved):
     global pins
-    pinName = inputRecieved.split(" ")[0]
-    state = inputRecieved.split(" ")[1]
-    state = toBoolean(state)
-    pins[pinName]['state'] = state
-    print "Changed {}".format(pinName, state)
-    print "Received: {}".format(inputRecieved)
+    try:
+        pinName = inputRecieved.split(" ")[0]
+        state = inputRecieved.split(" ")[1]
+        state = toBoolean(state)
+        pins[pinName]['state'] = state
+        print "Changed {}".format(pinName, state)
+        print "Received: {}".format(inputRecieved)
+    except:
+        print "\n\ninputRecieved = " + inputRecieved
+        # print "pin " + inputRecieved.split(" ")[0] + " state " + toBoolean(inputRecieved.split(" ")[1])
 
 # def initPi():
 #     if not isPi:
@@ -132,6 +136,7 @@ def LEDinfo():
         data =  " ".join([str(pinName), str(state)])
         # writePin(pinName, toBoolean(value))
         try:
+            print "data = " + data
             sock.sendall(data + "\n")
             # Receive data from the server and shut down
             received = sock.recv(1024)
@@ -144,6 +149,7 @@ def LEDinfo():
                 print "Connection Refused"
             elif errorcode == errno.EPIPE: 
                 print "Broken Pipe"
+
     return redirect('/')
 
 if __name__ == "__main__": 
