@@ -142,7 +142,7 @@ class TCPHandler(SocketServer.StreamRequestHandler):
 # End socket data helper functions
 ############################################
 # socket helper functions
-class Socket(SocketServer.TCPServer):
+class SocketHandler(SocketServer.TCPServer):
     
     def __init__(self, server_address, handler_class=TCPHandler):
         self.logger = logging.getLogger('EchoServer')
@@ -191,7 +191,7 @@ class Socket(SocketServer.TCPServer):
 socketHost, socketPort = "192.168.1.111", 9999
 address = (socketHost, socketPort)
 # Create the server, binding to socketHost on socketPort 
-socketServer = Socket((socketHost, socketPort), TCPHandler)
+socketServer = SocketHandler((socketHost, socketPort), TCPHandler)
 
 # Start the program
 if __name__ == "__main__":
@@ -214,6 +214,6 @@ if __name__ == "__main__":
     except KeyboardInterrupt as stop:    
         print "\nClosing Socket."
         # close the socket
-        socketServer.close()
+        socket.close()
         print "\n\n\nServer Run Complete."
     
