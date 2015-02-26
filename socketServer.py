@@ -152,7 +152,7 @@ class TCPHandler(SocketServer.StreamRequestHandler):
             self.wfile.write(pinName)
             self.wfile.write(state)
             writeAll(toBoolean(state))
-        else:
+        else
             print "*** SOMETHING ISN'T RIGHT ***"
     def finish(self):
         self.logger.debug('finish')
