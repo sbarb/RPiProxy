@@ -129,14 +129,9 @@ class TCPHandler(SocketServer.StreamRequestHandler):
         self.wfile.write(self.data)
         if pinName in pins:
             print "***IF EXECUTED***"
-            self.wfile.write(pinName)
-            self.wfile.write(state)
-            self.wfile.write(pins)
             writePin(pinName, toBoolean(state))
         elif str(pinName) in ("all", "ALL", "All", "aLL", "alL", "aLl"):
             print "***ELIF (ALL) EXECUTED***"
-            self.wfile.write(pinName)
-            self.wfile.write(state)
             writeAll(toBoolean(state))
         else:
             print "*** SOMETHING ISN'T RIGHT ***"
