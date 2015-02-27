@@ -2,8 +2,8 @@ import requests as R
 from time import sleep
 from random import choice
 
-# URL = 'http://108.178.248.104/LEDinfo'
-URL = 'http://localhost:5000/LEDinfo'
+URL = 'http://108.178.248.104/LEDinfo'
+# URL = 'http://localhost:5000/LEDinfo'
 # state should be 0 or 1
 def l(state=0):
   state = str(state)
@@ -50,45 +50,30 @@ def all(state):
 def each():
   return [q,w,e,r,t,y,u,i,o,p]
 
-def pulsate(times):
+def pulsate(times, frequency=0.01):
   if times < 1:
     return True
-  _(q(1))(.01)
-  _(w(1))(.01)
-  _(e(1))(.01)
-  _(r(1))(.01)
-  _(t(1))(.01)
-  _(y(1))(.01)
-  _(u(1))(.01)
-  _(i(1))(.01)
-  _(o(1))(.01)
-  _(p(1))(.01)
-  _(q())(.01)
-  _(w())(.01)
-  _(e())(.01)
-  _(r())(.01)
-  _(t())(.01)
-  _(y())(.01)
-  _(u())(.01)
-  _(i())(.01)
-  _(o())(.01)
-  _(p())
+  for fn in each():
+    _(fn(1))(frequency)
+  for fn in each():
+    _(fn(0))(frequency)
   pulsate(times-1)
 
-def pulsateFast(times):
+def snake(times, frequency=0.01):
   if times < 1:
     return True
-  _(q(1), w(1))(.01)
-  _(e(1), r(1))(.01)
-  _(t(1), y(1))(.01)
-  _(u(1), i(1))(.01)
-  _(o(1), p(1))(.01)
-  _(q(0), w(0))(.01)
-  _(e(0), r(0))(.01)
-  _(t(0), y(0))(.01)
-  _(u(0), i(0))(.01)
-  _(o(0), p(0))(.01)
-  pulsateFast(times-1)
+  lights = each()
+  for fn in lights:
+    _(fn(1))(frequency)
+  _(q(0))(frequency)
+  for i, current in enumerate(lights):
+    if i+1 < len(lights):
+      next = lights[i+1]
+    else:
+      next = lights[0]
+    _(current(1), next(0))(frequency)
+
+  snake(times-1)
 
 def rando(times):
   if times < 1:
@@ -101,17 +86,17 @@ def rando(times):
   _(*data)(0.5)
   rando(times-1)
 
-def flicker(times):
+def flicker(times, frequency=0.1):
   if times < 1:
     return True
-  _(*all(1))(0.1)  
-  _(*all(0))(0.1)
+  _(*all(1))(frequency)  
+  _(*all(0))(frequency)
   flicker(times-1)
 
-# flicker(3)
+flicker(3, 0.05)
 # rando(20)
-pulsateFast(10)
-# flicker(3)
+snake(10, 0.01)
+flicker(3)
 
 # lampOn()
 # sleep(1)
