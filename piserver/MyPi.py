@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.DEBUG,
 # expected value is 0 or 1
 # NOTE: this is where the environment variable is processed
 if 'PI' in os.environ:
-    IS_PI = True if os.environ['PI'] is "1" 
+    IS_PI = True if os.environ['PI'] == "1" else False
     import RPi.GPIO as GPIO
 else:
     IS_PI = False
