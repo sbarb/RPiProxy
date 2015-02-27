@@ -2,7 +2,7 @@ import socket
 import sys
 from PinsConfig import PinsMap as PinsMap
 import errno
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, jsonify
 def makeDebugString(pin_tuple):
     return "/ "+ pin_tuple[0] +" = " + pin_tuple[1]
 
@@ -41,6 +41,10 @@ except Exception as e:
 
 # Define the flask application
 app = Flask(__name__)
+
+@app.route('/state', methods=["GET"])
+def state():
+    return jsonify(PinsMap)
 
 @app.route("/", methods=['GET'])
 def index():

@@ -9,9 +9,9 @@
 </head>
 <body>
 <div class=logo><img src="/static/logo.png"></div>
-<form action="LEDinfo" method="POST">
+<form action="LEDinfo" method="POST" id="lightForm">
     {% for pinName, data in pins.iteritems() %}
-      <div>
+      <div class="switch-container">
         <h1>{{data.name}}</h1>
         {% if data.state %}
           <input class="offbtn" type="submit" name="{{pinName}}" value="0">
@@ -23,4 +23,46 @@
   </form>
 </body>
 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" ></script>
+
+<script>
+  var drawSwitch = function (pinName, obj) {
+    $switchContainer = $('<div class="switch-container"></div>');
+    $switchTitle = $('<h1>').text(obj.name);
+    $button = $('<input type="submit"></input>').attr('name', pinName)
+    if(obj.state){
+      $button.addClass('offbtn').attr('value', 0);
+    } else {
+      $button.addClass('onbtn').attr('value', 1);
+    }
+
+    $switchContainer.append($switchTitle).append($button);
+    $('form#lightForm').append($switchContainer);
+  };
+  var drawInterface = function (PinsMap) {
+    // TODO: sort on weight
+    $('.switch-container').remove()
+    sortedData = []
+    for(pinName in PinsMap) {
+      data = PinsMap[pinName]
+      sortedData[data.weight] = [pinName, data]
+    }
+    sortedData.forEach(function (data) {
+      pinName = data[0]
+      obj = data[1]
+      drawSwitch(pinName, obj);
+    });
+  };
+
+  var getFreshServerData = function () {
+    $.get('http://localhost:5000/state', processServerData);
+  };
+
+  var processServerData = function (PinsMap) {
+    drawInterface(PinsMap)
+
+  };
+
+  setInterval(getFreshServerData, 1000)
+</script>
 </html>
