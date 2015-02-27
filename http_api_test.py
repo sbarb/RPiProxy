@@ -1,7 +1,17 @@
 import requests as R
 from time import sleep
 from random import choice
+import socket
+HOST, PORT = "192.168.1.111", 9999
+# HOST, PORT = "127.0.0.1", 9999
 
+# Create a socket (SOCK_STREAM means a TCP socket)
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+try:
+    sock.connect((HOST, PORT))
+except Exception as e:
+    print "Failed to connect to socket server"
+    raise e
 URL = 'http://108.178.248.104/LEDinfo'
 # URL = 'http://localhost:5000/LEDinfo'
 # state should be 0 or 1
@@ -41,7 +51,17 @@ def p(state=0):
 
 def _(*args):
   data = dict(obj.items()[0] for obj in args)
-  R.post(URL, data=data)
+  # HTTP
+  # R.post(URL, data=data)
+  # Socket
+  commands = []
+  for k, v in data.iteritems():
+    commands.append(k+" "+v)
+  command_str = "|".join(commands)
+  print command_str
+  sock.sendall(command_str+"\n")
+  r = sock.recv(2048)
+  print "received", r
   return sleep
 
 def all(state):
@@ -57,7 +77,7 @@ def pulsate(times, frequency=0.01):
     _(fn(1))(frequency)
   for fn in each():
     _(fn(0))(frequency)
-  pulsate(times-1)
+  pulsate(times-1, frequency)
 
 def snake(times, frequency=0.01):
   if times < 1:
@@ -73,9 +93,9 @@ def snake(times, frequency=0.01):
       next = lights[0]
     _(current(1), next(0))(frequency)
 
-  snake(times-1)
+  snake(times-1, frequency)
 
-def rando(times):
+def rando(times, frequency=0.5):
   if times < 1:
     return True
   data = []
@@ -83,21 +103,72 @@ def rando(times):
   for thing in each():
     c = choice([1, 0])
     data.append(thing(c))
-  _(*data)(0.5)
-  rando(times-1)
+  _(*data)(frequency)
+  rando(times-1, frequency)
+
+def outsideIn(times, frequency=0.1):
+  if times < 1:
+    return True
+  lights = each()
+  length = len(lights)
+  for leftIndex, left in enumerate(lights):
+    rightIndex = length-1-leftIndex
+    if rightIndex < leftIndex:
+      break
+    right = lights[rightIndex]
+    polarity = 1
+    _(left(polarity), right(polarity))(frequency)
+
+  for leftIndex, left in enumerate(lights):
+    rightIndex = length-1-leftIndex
+    right = lights[rightIndex]
+    polarity = 0
+    _(left(polarity), right(polarity))(frequency)
+
+  outsideIn(times-1, frequency)
+
+def inAndOut(times, frequency=0.1):
+  if times < 1:
+    return True
+  lights = each()
+  length = len(lights)
+  for leftIndex, left in enumerate(lights):
+    rightIndex = length-1-leftIndex
+    right = lights[rightIndex]
+    polarity = 1
+    if leftIndex > rightIndex:
+      polarity=0
+    _(left(polarity), right(polarity))(frequency)
+  inAndOut(times-1, frequency)
 
 def flicker(times, frequency=0.1):
   if times < 1:
     return True
   _(*all(1))(frequency)  
   _(*all(0))(frequency)
-  flicker(times-1)
+  flicker(times-1, frequency)
 
 flicker(3, 0.05)
-# rando(20)
-snake(10, 0.01)
+# animations = [rando, pulsate, snake, outsideIn, inAndOut]
+# frequencies = [0.01, 0.005, 0.05]
+# nums = list(range(5, 10))
+# for i in range(0, 30):
+#   animation = choice(animations)
+#   num = choice(nums)
+#   freq = choice(frequencies)
+#   print animation, num, freq
+#   animation(5, 0.05)
+rando(500, 0.01)
+pulsate(3, .005)
+snake(2, 0.01)
+outsideIn(2, 0.01)
+inAndOut(3, 0.05)
+outsideIn(3, 0.01)
+inAndOut(2, 0.05)
+outsideIn(3, 0.01)
+inAndOut(3, 0.05)
 flicker(3)
-
+sock.close()
 # lampOn()
 # sleep(1)
 # lampOff()
