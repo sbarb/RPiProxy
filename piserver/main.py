@@ -7,7 +7,8 @@ logging.basicConfig(level=logging.DEBUG,
 
 # set the socket host and port addresses
 # SOCKET_HOST, SOCKET_PORT = "192.168.1.111", 9999
-SOCKET_HOST = "127.0.0.1"
+# SOCKET_HOST = "127.0.0.1"
+SOCKET_HOST = "192.168.1.111"
 SOCKET_PORT = 9999
 
 # EntryPoint to the program

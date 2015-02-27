@@ -29,8 +29,8 @@ def updatePins(inputReceived):
             # print "pin " + command.split(" ")[0] + " state " + toBoolean(inputRecieved.split(" ")[1])
 
 
-# HOST, PORT = "192.168.1.111", 9999
-HOST, PORT = "127.0.0.1", 9999
+HOST, PORT = "192.168.1.111", 9999
+# HOST, PORT = "127.0.0.1", 9999
 
 # Create a socket (SOCK_STREAM means a TCP socket)
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
