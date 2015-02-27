@@ -35,8 +35,10 @@ class GPIOTCPHandler(SocketServer.StreamRequestHandler):
             # TODO: check if self.data is a "done" signal.
             if self.data == "TURN_OFF":
                 pass
+            print "data", self.data
             for command in self.data.split("|"):
                 pinName, state = command.split(" ")
+                print pinName, state
                 state = MyPi.toBoolean(state)
                 print "{} wrote:".format(self.client_address[0])
                 print "Pin Name {}".format(pinName)

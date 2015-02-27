@@ -75,6 +75,21 @@ def pulsate(times):
   _(p())
   pulsate(times-1)
 
+def pulsateFast(times):
+  if times < 1:
+    return True
+  _(q(1), w(1))(.01)
+  _(e(1), r(1))(.01)
+  _(t(1), y(1))(.01)
+  _(u(1), i(1))(.01)
+  _(o(1), p(1))(.01)
+  _(q(0), w(0))(.01)
+  _(e(0), r(0))(.01)
+  _(t(0), y(0))(.01)
+  _(u(0), i(0))(.01)
+  _(o(0), p(0))(.01)
+  pulsateFast(times-1)
+
 def rando(times):
   if times < 1:
     return True
@@ -93,10 +108,10 @@ def flicker(times):
   _(*all(0))(0.1)
   flicker(times-1)
 
-flicker(3)
-rando(20)
-# pulsate(10)
-flicker(3)
+# flicker(3)
+# rando(20)
+pulsateFast(10)
+# flicker(3)
 
 # lampOn()
 # sleep(1)

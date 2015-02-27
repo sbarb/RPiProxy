@@ -14,18 +14,19 @@ def toBoolean(boolStr):
     else:
         return None
 
-def updatePins(inputRecieved):
+def updatePins(inputReceived):
     global PinsMap
-    try:
-        pinName = inputRecieved.split(" ")[0]
-        state = inputRecieved.split(" ")[1]
-        state = toBoolean(state)
-        PinsMap[pinName]['state'] = state
-        print "Changed {}".format(pinName, state)
-        print "Received: {}".format(inputRecieved)
-    except:
-        print "\n\ninputRecieved = " + inputRecieved
-        # print "pin " + inputRecieved.split(" ")[0] + " state " + toBoolean(inputRecieved.split(" ")[1])
+    commands = inputReceived.split('|')
+    for command in commands:
+        try:
+            pinName, state = command.split(" ")
+            state = toBoolean(state)
+            PinsMap[pinName]['state'] = state
+            print "Changed {}".format(pinName, state)
+            print "Received: {}".format(command)
+        except:
+            print "\n\ninputReceived = " + command
+            # print "pin " + command.split(" ")[0] + " state " + toBoolean(inputRecieved.split(" ")[1])
 
 
 # HOST, PORT = "192.168.1.111", 9999
