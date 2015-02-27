@@ -2,7 +2,8 @@ import requests as R
 from time import sleep
 from random import choice
 
-URL = 'http://108.178.248.104/LEDinfo'
+# URL = 'http://108.178.248.104/LEDinfo'
+URL = 'http://localhost:5000/LEDinfo'
 # state should be 0 or 1
 def l(state=0):
   state = str(state)
