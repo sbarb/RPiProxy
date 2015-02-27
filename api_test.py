@@ -2,7 +2,9 @@ import requests as R
 from time import sleep
 from random import choice
 import socket
+# On Pi this is the HOST and PORT
 HOST, PORT = "192.168.1.111", 9999
+# On a local dev box
 # HOST, PORT = "127.0.0.1", 9999
 
 # Create a socket (SOCK_STREAM means a TCP socket)
@@ -12,7 +14,9 @@ try:
 except Exception as e:
     print "Failed to connect to socket server"
     raise e
+# The Pi's ip for the Flask Server
 URL = 'http://108.178.248.104/LEDinfo'
+# Local Flask Server
 # URL = 'http://localhost:5000/LEDinfo'
 # state should be 0 or 1
 def l(state=0):

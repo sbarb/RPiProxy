@@ -3,8 +3,10 @@ for the `Raspberry Pi`
 to control `GPIO pins`
 through a `web ui`
 
-Client -> Server
+Flask - Client/http-Server  -> Socket - Server -> GPIO
 
-flaskServer.py -> socketServer.py
+proxyserver.py -> piserver-main.py -> GPIO
 
-flask is the http server that acts as the client to the socketServer
+Flask is the http server that acts as the client to the Socket Server
+
+
