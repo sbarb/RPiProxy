@@ -26,8 +26,6 @@ def updatePins(inputReceived):
             print "Received: {}".format(command)
         except:
             print "\n\ninputReceived = " + command
-            # print "pin " + command.split(" ")[0] + " state " + toBoolean(inputRecieved.split(" ")[1])
-
 
 HOST, PORT = "192.168.1.111", 9999
 # HOST, PORT = "127.0.0.1", 9999
@@ -72,7 +70,6 @@ def LEDinfo():
         command = " ".join([str(pinName), str(state)])
         commands.append(command)
     data = "|".join(commands)
-    # writePin(pinName, toBoolean(value))
     try:
         # connection established, send some stuff
         print "data = " + data
@@ -80,8 +77,8 @@ def LEDinfo():
         print "Sent " + data
         received = sock.recv(2048)
         # update the client
-        print 'received:', received
         updatePins(received)
+        print 'received:', received
         
     except socket.error, v:
         errorcode=v[0]

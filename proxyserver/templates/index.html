@@ -40,7 +40,6 @@
     $('form#lightForm').append($switchContainer);
   };
   var drawInterface = function (PinsMap) {
-    // TODO: sort on weight
     $('.switch-container').remove()
     sortedData = []
     for(pinName in PinsMap) {
@@ -60,7 +59,6 @@
 
   var processServerData = function (PinsMap) {
     drawInterface(PinsMap)
-
   };
 
   setInterval(getFreshServerData, 1000)

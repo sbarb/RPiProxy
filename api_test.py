@@ -55,8 +55,9 @@ def p(state=0):
 
 def _(*args):
   data = dict(obj.items()[0] for obj in args)
-  # HTTP
+  # # HTTP
   # R.post(URL, data=data)
+  # end HTTP
   # Socket
   commands = []
   for k, v in data.iteritems():
@@ -66,6 +67,7 @@ def _(*args):
   sock.sendall(command_str+"\n")
   r = sock.recv(2048)
   print "received", r
+  # end Socket
   return sleep
 
 def all(state):
@@ -96,7 +98,6 @@ def snake(times, frequency=0.01):
     else:
       next = lights[0]
     _(current(1), next(0))(frequency)
-
   snake(times-1, frequency)
 
 def rando(times, frequency=0.5):
@@ -162,17 +163,20 @@ flicker(3, 0.05)
 #   freq = choice(frequencies)
 #   print animation, num, freq
 #   animation(5, 0.05)
-rando(500, 0.01)
+
+rando(10, 0.001)
 pulsate(3, .005)
-snake(2, 0.01)
+snake(10, 0.01)
 outsideIn(2, 0.01)
 inAndOut(3, 0.05)
 outsideIn(3, 0.01)
 inAndOut(2, 0.05)
 outsideIn(3, 0.01)
 inAndOut(3, 0.05)
+snake(10, 0.01)
+
 flicker(3)
-sock.close()
+# sock.close()
 # lampOn()
 # sleep(1)
 # lampOff()
